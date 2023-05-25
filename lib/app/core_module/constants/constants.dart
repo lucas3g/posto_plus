@@ -1,4 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:posto_plus/app/core_module/services/device_info/device_info_interface.dart';
 import 'package:posto_plus/app/core_module/services/shared_preferences/local_storage_interface.dart';
@@ -7,6 +8,8 @@ const baseUrl = String.fromEnvironment('BASE_URL');
 const baseUrlLicense = String.fromEnvironment('BASE_URL_LICENSE');
 
 const pathLogo = 'assets/images/logo.svg';
+
+const backgroundBlack = Color(0xFF202123);
 
 // class GlobalFuncionario {
 //   GlobalFuncionario._();

@@ -52,6 +52,10 @@ class _AuthPageState extends State<AuthPage> {
 
   final gkForm = GlobalKey<FormState>();
 
+  final fCNPJ = FocusNode();
+  final fUsuario = FocusNode();
+  final fSenha = FocusNode();
+
   late StreamSubscription sub;
   late StreamSubscription subLicense;
 
@@ -154,210 +158,227 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
+  void initLogin() {
+    if (!gkForm.currentState!.validate()) {
+      return;
+    }
+
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    widget.licenseBloc.add(
+      VerifyLicenseEvent(
+        deviceInfo: GlobalDevice.instance.deviceInfo,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeModeController.themeMode == ThemeMode.dark
-          ? const Color(0xFF202123)
+          ? backgroundBlack
           : context.myTheme.background,
       body: Container(
         padding: const EdgeInsets.all(kPadding),
         width: context.screenWidth,
         height: context.screenHeight,
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SvgPicture.asset(
-                ThemeModeController.themeMode == ThemeMode.dark
-                    ? pathLogoDark
-                    : pathLogoLight,
-                width: context.screenWidth,
-              ),
-              Form(
-                key: gkForm,
-                child: Column(
-                  children: [
-                    // const Text('Entre com sua conta'),
-                    // const SizedBox(height: 10),
-                    MyInputWidget(
-                      label: 'CNPJ',
-                      hintText: 'Digite o CNPJ da empresa',
-                      validator: (v) {
-                        late String? result;
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: context.screenHeight * .91,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SvgPicture.asset(
+                    ThemeModeController.themeMode == ThemeMode.dark
+                        ? pathLogoDark
+                        : pathLogoLight,
+                    width: context.screenWidth,
+                  ),
+                  Form(
+                    key: gkForm,
+                    child: Column(
+                      children: [
+                        // const Text('Entre com sua conta'),
+                        // const SizedBox(height: 10),
+                        MyInputWidget(
+                          focusNode: fCNPJ,
+                          label: 'CNPJ',
+                          hintText: 'Digite o CNPJ da empresa',
+                          validator: (v) {
+                            late String? result;
 
-                        result = user.cnpj.validate('CNPJ').exceptionOrNull();
+                            result =
+                                user.cnpj.validate('CNPJ').exceptionOrNull();
 
-                        if (result != null) {
-                          return result;
-                        }
+                            if (result != null) {
+                              return result;
+                            }
 
-                        if (!CNPJValidator.isValid(v)) {
-                          result = 'CNPJ inválido';
-                        }
-                        return result;
-                      },
-                      value: user.cnpj.value,
-                      onChanged: (v) => user.setCNPJ(v),
-                      keyboardType: TextInputType.number,
-                      inputFormaters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        CnpjInputFormatter(),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    MyInputWidget(
-                      label: 'Usuário',
-                      hintText: 'Digite seu usuário',
-                      validator: (v) =>
-                          user.login.validate('Usuário').exceptionOrNull(),
-                      value: user.login.value,
-                      onChanged: (v) => user.setLogin(v),
-                      inputFormaters: [UpperCaseTextFormatter()],
-                    ),
-                    const SizedBox(height: 10),
-                    MyInputWidget(
-                      obscureText: true,
-                      maxLines: 1,
-                      label: 'Senha',
-                      hintText: 'Digite sua senha',
-                      validator: (v) =>
-                          user.senha.validate('Senha').exceptionOrNull(),
-                      value: user.senha.value,
-                      onChanged: (v) => user.setSenha(v),
-                      inputFormaters: [UpperCaseTextFormatter()],
-                    ),
-                    const SizedBox(height: 10),
-                    BlocBuilder<LicenseBloc, LicenseStates>(
-                        bloc: widget.licenseBloc,
-                        builder: (context, licenseState) {
-                          return BlocBuilder<AuthBloc, AuthStates>(
-                            bloc: widget.authBloc,
-                            builder: (context, state) {
-                              return MyElevatedButtonWidget(
-                                height: 40,
-                                label: retornaLogin(state, licenseState),
-                                onPressed: () {
-                                  if (!gkForm.currentState!.validate()) {
-                                    return;
-                                  }
-
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-
-                                  widget.licenseBloc.add(
-                                    VerifyLicenseEvent(
-                                      deviceInfo:
-                                          GlobalDevice.instance.deviceInfo,
-                                    ),
+                            if (!CNPJValidator.isValid(v)) {
+                              result = 'CNPJ inválido';
+                            }
+                            return result;
+                          },
+                          value: user.cnpj.value,
+                          onChanged: (v) => user.setCNPJ(v),
+                          keyboardType: TextInputType.number,
+                          inputFormaters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CnpjInputFormatter(),
+                          ],
+                          onFieldSubmitted: (v) => fUsuario.requestFocus(),
+                        ),
+                        const SizedBox(height: 10),
+                        MyInputWidget(
+                          focusNode: fUsuario,
+                          label: 'Usuário',
+                          hintText: 'Digite seu usuário',
+                          validator: (v) =>
+                              user.login.validate('Usuário').exceptionOrNull(),
+                          value: user.login.value,
+                          onChanged: (v) => user.setLogin(v),
+                          inputFormaters: [UpperCaseTextFormatter()],
+                          onFieldSubmitted: (v) => fSenha.requestFocus(),
+                        ),
+                        const SizedBox(height: 10),
+                        MyInputWidget(
+                          focusNode: fSenha,
+                          obscureText: true,
+                          maxLines: 1,
+                          label: 'Senha',
+                          hintText: 'Digite sua senha',
+                          validator: (v) =>
+                              user.senha.validate('Senha').exceptionOrNull(),
+                          value: user.senha.value,
+                          onChanged: (v) => user.setSenha(v),
+                          inputFormaters: [UpperCaseTextFormatter()],
+                          onFieldSubmitted: (v) {
+                            initLogin();
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        BlocBuilder<LicenseBloc, LicenseStates>(
+                            bloc: widget.licenseBloc,
+                            builder: (context, licenseState) {
+                              return BlocBuilder<AuthBloc, AuthStates>(
+                                bloc: widget.authBloc,
+                                builder: (context, state) {
+                                  return MyElevatedButtonWidget(
+                                    height: 40,
+                                    label: retornaLogin(state, licenseState),
+                                    onPressed: () {
+                                      initLogin();
+                                    },
                                   );
                                 },
                               );
-                            },
-                          );
-                        }),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return MyAlertDialogWidget(
-                                  title: 'Código de Autenticação',
-                                  content:
-                                      GlobalDevice.instance.deviceInfo.deviceID,
-                                  subContent:
-                                      'Se você já tem uma licença. Por favor, ignore essa mensagem.',
-                                  okButton: MyElevatedButtonWidget(
-                                    height: 45,
-                                    label: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(Icons.message_rounded),
-                                        SizedBox(width: 5),
-                                        Flexible(child: Text('WhatsApp')),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      AuthController.openWhatsapp(
-                                        text:
-                                            'Olá, desejo usar o aplicativo do Posto Plus esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
-                                        number: '+555499712433',
-                                      );
-                                    },
-                                  ),
-                                  cancelButton: MyElevatedButtonWidget(
-                                    height: 45,
-                                    label: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(Icons.close),
-                                        SizedBox(width: 5),
-                                        Text('Fechar'),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      Modular.to.pop('dialog');
-                                    },
-                                  ),
+                            }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return MyAlertDialogWidget(
+                                      title: 'Código de Autenticação',
+                                      content: GlobalDevice
+                                          .instance.deviceInfo.deviceID,
+                                      subContent:
+                                          'Se você já tem uma licença. Por favor, ignore essa mensagem.',
+                                      okButton: MyElevatedButtonWidget(
+                                        height: 45,
+                                        label: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Icon(Icons.message_rounded),
+                                            SizedBox(width: 5),
+                                            Flexible(child: Text('WhatsApp')),
+                                          ],
+                                        ),
+                                        onPressed: () {
+                                          AuthController.openWhatsapp(
+                                            text:
+                                                'Olá, desejo usar o aplicativo do Posto Plus esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
+                                            number: '+555499712433',
+                                          );
+                                        },
+                                      ),
+                                      cancelButton: MyElevatedButtonWidget(
+                                        height: 45,
+                                        label: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Icon(Icons.close),
+                                            SizedBox(width: 5),
+                                            Text('Fechar'),
+                                          ],
+                                        ),
+                                        onPressed: () {
+                                          Modular.to.pop('dialog');
+                                        },
+                                      ),
+                                    );
+                                  },
                                 );
                               },
-                            );
-                          },
-                          child: Text(
-                            'Licença para acessar',
-                            style: context.textTheme.labelLarge,
-                          ),
+                              child: Text(
+                                'Licença para acessar',
+                                style: context.textTheme.labelLarge,
+                              ),
+                            ),
+                          ],
                         ),
+                        // ListTile(
+                        //   minLeadingWidth: 2,
+                        //   leading: Icon(
+                        //     ThemeModeController.appStore.themeMode.value ==
+                        //             ThemeMode.dark
+                        //         ? Icons.dark_mode
+                        //         : Icons.light_mode,
+                        //     color:
+                        //         ThemeModeController.appStore.themeMode.value ==
+                        //                 ThemeMode.dark
+                        //             ? context.myTheme.primaryContainer
+                        //             : context.myTheme.error,
+                        //   ),
+                        //   title: Text(
+                        //     ThemeModeController.appStore.themeMode.value ==
+                        //             ThemeMode.dark
+                        //         ? 'Dark'
+                        //         : 'Light',
+                        //   ),
+                        //   onTap: () {
+                        //     ThemeModeController.appStore.changeThemeMode(
+                        //       ThemeModeController.appStore.themeMode.value ==
+                        //               ThemeMode.dark
+                        //           ? ThemeMode.light
+                        //           : ThemeMode.dark,
+                        //     );
+                        //   },
+                        // ),
                       ],
                     ),
-                    ListTile(
-                      minLeadingWidth: 2,
-                      leading: Icon(
-                        ThemeModeController.appStore.themeMode.value ==
-                                ThemeMode.dark
-                            ? Icons.dark_mode
-                            : Icons.light_mode,
-                        color: ThemeModeController.appStore.themeMode.value ==
-                                ThemeMode.dark
-                            ? context.myTheme.primaryContainer
-                            : context.myTheme.error,
-                      ),
-                      title: Text(
-                        ThemeModeController.appStore.themeMode.value ==
-                                ThemeMode.dark
-                            ? 'Dark'
-                            : 'Light',
-                      ),
-                      onTap: () {
-                        ThemeModeController.appStore.changeThemeMode(
-                          ThemeModeController.appStore.themeMode.value ==
-                                  ThemeMode.dark
-                              ? ThemeMode.light
-                              : ThemeMode.dark,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Versão de demonstração',
-                      style: context.textTheme.labelLarge,
-                    ),
                   ),
-                  const Text('EL Sistemas - 2023 - 54 3364-1588'),
+                  Column(
+                    children: [
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Versão de demonstração',
+                          style: context.textTheme.labelLarge,
+                        ),
+                      ),
+                      const Text('EL Sistemas - 2023 - 54 3364-1588'),
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
