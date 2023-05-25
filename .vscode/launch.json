@@ -2,23 +2,23 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "[dev] agil_coletas",
+            "name": "[dev] posto_plus",
             "request": "launch",
             "type": "dart",
             "toolArgs": [
                 "--dart-define",
                 "BASE_URL_LICENSE=http://54.94.115.42/api",
                 "--dart-define",
-                "BASE_URL=http://192.168.254.200:9000/AppPostoPlus",
+                "BASE_URL=http://192.168.254.10/firebird/AppPostoPlus",
             ]
         },
         {
-            "name": "[prod] agil_coletas",
+            "name": "[prod] posto_plus",
             "request": "launch",
             "type": "dart",
-            "args": [
-                "--release"
-            ],
+            // "args": [
+            //     "--release"
+            // ],
             "toolArgs": [
                 "--dart-define",
                 "BASE_URL_LICENSE=http://54.94.115.42/api",

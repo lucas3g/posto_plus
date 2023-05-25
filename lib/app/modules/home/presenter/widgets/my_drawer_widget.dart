@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:posto_plus/app/core_module/constants/constants.dart';
+import 'package:posto_plus/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:posto_plus/app/shared/stores/app_store.dart';
 import 'package:posto_plus/app/utils/constants.dart';
 
@@ -15,6 +16,8 @@ class MyDrawerWidget extends StatefulWidget {
 }
 
 class _MyDrawerWidgetState extends State<MyDrawerWidget> {
+  final nome = GlobalUser.instance.user.nome;
+
   @override
   Widget build(BuildContext context) {
     final appStore = context.watch<AppStore>(
@@ -42,7 +45,7 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Lucas Emanuel Silva',
+                      nome.value,
                       style: context.textTheme.titleMedium!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -88,11 +91,38 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                     ),
                   ],
                 ),
-                const ListTile(
-                  title: Text(
-                    'Versão 1.0.0',
-                    textAlign: TextAlign.end,
-                  ),
+                Column(
+                  children: [
+                    ListTile(
+                      onTap: () async {
+                        final localStorage = Modular.get<ILocalStorage>();
+
+                        await localStorage.removeData('user');
+                        await localStorage.removeData('DEVICE_ID');
+
+                        await Future.delayed(const Duration(milliseconds: 150));
+
+                        Modular.to.navigate('/auth/');
+                      },
+                      minLeadingWidth: 2,
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: appStore.themeMode.value == ThemeMode.dark
+                            ? context.myTheme.primaryContainer
+                            : context.myTheme.error,
+                      ),
+                      title: const Text(
+                        'Sair',
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    const ListTile(
+                      title: Text(
+                        'Versão 1.0.0',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

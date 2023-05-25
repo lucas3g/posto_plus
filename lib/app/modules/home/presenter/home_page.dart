@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Container(),
           Positioned(
-            top: (context.screenHeight == 672 ? 65 : 85.0),
+            top: (context.screenHeight == 672 ? 65 : 88.0),
             left: 20.0,
             right: 20.0,
             child: DropDownWidget(

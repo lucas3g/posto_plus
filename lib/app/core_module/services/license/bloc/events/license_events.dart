@@ -10,6 +10,4 @@ class VerifyLicenseEvent extends LicenseEvents {
   });
 }
 
-class SaveLicenseEvent extends LicenseEvents {}
-
 class GetDateLicenseEvent extends LicenseEvents {}

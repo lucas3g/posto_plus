@@ -5,13 +5,13 @@ class ProjecaoAdapter {
   static Projecao fromMap(dynamic map) {
     return Projecao(
       id: const IdVO(1),
-      ccusto: map['CCUSTO'],
-      vendaDiaria: map['VENDA_DIARIA'],
-      qtdDiaria: map['QTD_DIARIA'],
-      vendaSemanal: map['VENDA_SEMANAL'],
-      qtdSemanal: map['QTD_SEMANAL'],
-      vendaProjecao: map['VENDA_PROJECAO'],
-      qtdProjecao: map['QTD_PROJECAO'],
+      ccusto: int.parse(map['CCUSTO'].toString()),
+      vendaDiaria: double.parse(map['VENDA_DIARIA'].toString()),
+      qtdDiaria: double.parse(map['QTD_DIARIA'].toString()),
+      vendaSemanal: double.parse(map['VENDA_SEMANAL'].toString()),
+      qtdSemanal: double.parse(map['QTD_SEMANAL'].toString()),
+      vendaProjecao: double.parse(map['VENDA_MES'].toString()),
+      qtdProjecao: double.parse(map['QTD_MES'].toString()),
     );
   }
 }

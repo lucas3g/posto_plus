@@ -15,6 +15,10 @@ const pathLogo = 'assets/images/logo.svg';
 
 const backgroundBlack = Color(0xFF202123);
 
+const urlProjecao = 'vendas/projecao';
+const urlGrafico = 'vendas/grafico';
+const urlVendas = 'vendas/vendas';
+
 class GlobalUser {
   GlobalUser._();
 

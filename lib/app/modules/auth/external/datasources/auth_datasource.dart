@@ -37,6 +37,8 @@ class AuthDatasource implements IAuthDatasource {
       throw const MyException(message: 'Usuário sem permissão para acessar.');
     }
 
+    user.setNome(jsonDecode(result.data)['NOME']);
+
     return UserAdapter.toMap(user);
   }
 }

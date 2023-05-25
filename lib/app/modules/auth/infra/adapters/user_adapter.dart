@@ -7,6 +7,7 @@ class UserAdapter {
   static String toJson(User user) {
     return jsonEncode({
       'CNPJ': user.cnpj.value,
+      'NOME': user.nome.value,
       'USUARIO': user.login.value,
       'SENHA': user.senha.value,
     });
@@ -15,6 +16,7 @@ class UserAdapter {
   static Map<String, dynamic> toMap(User user) {
     return {
       'CNPJ': user.cnpj.value,
+      'NOME': user.nome.value,
       'USUARIO': user.login.value,
       'SENHA': user.senha.value,
     };
@@ -24,6 +26,7 @@ class UserAdapter {
     return User(
       id: const IdVO(1),
       cnpj: map['CNPJ'],
+      nome: map['NOME'] ?? '',
       login: map['USUARIO'],
       senha: map['SENHA'],
     );

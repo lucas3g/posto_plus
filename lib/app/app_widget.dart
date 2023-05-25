@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:posto_plus/app/shared/stores/app_store.dart';
@@ -11,6 +12,10 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Modular.setNavigatorKey(NavigationService.navigatorKey);
 
+    Modular.setObservers([
+      BotToastNavigatorObserver(),
+    ]);
+
     final appStore = context.watch<AppStore>(
       (store) => store.themeMode,
     );
@@ -23,6 +28,7 @@ class AppWidget extends StatelessWidget {
       darkTheme: darkTheme,
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,
+      builder: (context, child) => BotToastInit()(context, child),
     );
   }
 }
