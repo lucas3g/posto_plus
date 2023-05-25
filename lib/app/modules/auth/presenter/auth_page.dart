@@ -175,9 +175,6 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeModeController.themeMode == ThemeMode.dark
-          ? backgroundBlack
-          : context.myTheme.background,
       body: Container(
         padding: const EdgeInsets.all(kPadding),
         width: context.screenWidth,

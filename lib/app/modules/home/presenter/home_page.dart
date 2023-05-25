@@ -1,17 +1,36 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
 import 'package:posto_plus/app/modules/home/presenter/widgets/my_drawer_widget.dart';
-import 'package:posto_plus/app/shared/components/my_elevated_button_widget.dart';
+import 'package:posto_plus/app/modules/home/presenter/widgets/my_title_app_bar_widget.dart';
+import 'package:posto_plus/app/shared/components/drop_down_widget/presenter/bloc/ccusto_bloc.dart';
+import 'package:posto_plus/app/shared/components/drop_down_widget/presenter/drop_down_widget.dart';
 import 'package:posto_plus/app/utils/constants.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final CCustoBloc ccustoBloc;
+
+  const HomePage({
+    Key? key,
+    required this.ccustoBloc,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  late int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Modular.to.pushNamed('./vendas/');
+  }
+
   _appBar(height) {
     return PreferredSize(
       preferredSize: Size(context.screenWidth,
@@ -35,14 +54,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Vendas',
-                  textAlign: TextAlign.center,
-                  style: context.textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                MyTitleAppBarWidget(index: _currentIndex),
                 Builder(builder: (context) {
                   return IconButton(
                     onPressed: () {
@@ -64,10 +76,8 @@ class _HomePageState extends State<HomePage> {
             top: (context.screenHeight == 672 ? 65 : 85.0),
             left: 20.0,
             right: 20.0,
-            child: Container(
-              color: Colors.white,
-              width: 100,
-              height: 50,
+            child: DropDownWidget(
+              ccustoBloc: widget.ccustoBloc,
             ),
           )
         ],
@@ -80,19 +90,60 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: _appBar(AppBar().preferredSize.height),
       drawer: const MyDrawerWidget(),
-      body: SafeArea(
-        child: MyElevatedButtonWidget(
-          width: 200,
-          label: const Text('Muda tema'),
-          icon: Icons.change_circle,
-          onPressed: () {
-            ThemeModeController.appStore.changeThemeMode(
-              ThemeModeController.themeMode == ThemeMode.dark
-                  ? ThemeMode.light
-                  : ThemeMode.dark,
-            );
-          },
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: RouterOutlet(),
+      ),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
+        child: GNav(
+            backgroundColor: ThemeModeController.themeMode == ThemeMode.dark
+                ? context.myTheme.primaryContainer
+                : context.myTheme.primary,
+            haptic: true, // haptic feedback
+            tabBorderRadius: 15,
+            curve: Curves.easeIn, // tab animation curves
+            duration: const Duration(milliseconds: 500),
+            gap: 8, // the tab button gap between icon and text
+            activeColor: Colors.white, // selected icon and text color
+            tabBackgroundColor: ThemeModeController.themeMode == ThemeMode.dark
+                ? context.myTheme.primaryContainer.withOpacity(0.1)
+                : context.myTheme.primary
+                    .withOpacity(0.1), // selected tab background color
+            padding: Platform.isAndroid
+                ? const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
+                : const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+            selectedIndex: _currentIndex,
+            onTabChange: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            tabs: const [
+              GButton(
+                icon: Icons.attach_money_rounded,
+                text: 'Vendas',
+                iconColor: Colors.white,
+              ),
+              GButton(
+                icon: Icons.local_gas_station,
+                text: 'Tanques',
+                iconColor: Colors.white,
+              ),
+              GButton(
+                icon: Icons.account_balance_rounded,
+                text: 'Contas a Receber',
+                iconColor: Colors.white,
+              ),
+              GButton(
+                icon: Icons.payments_rounded,
+                text: 'Preço por Cliente',
+                iconColor: Colors.white,
+              ),
+            ]),
       ),
     );
   }

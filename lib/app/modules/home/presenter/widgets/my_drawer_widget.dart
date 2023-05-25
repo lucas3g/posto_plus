@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:posto_plus/app/core_module/constants/constants.dart';
 import 'package:posto_plus/app/shared/stores/app_store.dart';
 import 'package:posto_plus/app/utils/constants.dart';
 
@@ -54,7 +55,9 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
           ),
           Container(
             height: context.screenHeight * .85,
-            color: context.myTheme.background,
+            color: appStore.themeMode.value == ThemeMode.dark
+                ? backgroundBlack
+                : context.myTheme.background,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
