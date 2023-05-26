@@ -1,5 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:posto_plus/app/modules/home/submodules/cr/presenter/blocs/cr_bloc.dart';
+import 'package:posto_plus/app/modules/home/submodules/cr/presenter/blocs/events/cr_events.dart';
+import 'package:posto_plus/app/modules/home/submodules/tanques/presenter/bloc/events/tanques_events.dart';
+import 'package:posto_plus/app/modules/home/submodules/tanques/presenter/bloc/tanques_bloc.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/events/grafico_events.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/events/projecao_events.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/events/vendas_events.dart';
@@ -16,6 +20,8 @@ class HomeController {
       Modular.get<VendasBloc>(),
       Modular.get<ProjecaoBloc>(),
       Modular.get<GraficoBloc>(),
+      Modular.get<TanquesBloc>(),
+      Modular.get<CRBloc>(),
     ];
 
     late String route = '';
@@ -26,8 +32,12 @@ class HomeController {
         route = '../vendas/';
         break;
       case 1:
-        //handleTanquesBloc(ccusto, blocs[3]);
+        handleTanquesBloc(ccusto, blocs[3]);
         route = '../tanques/';
+        break;
+      case 2:
+        handleCRBloc(ccusto, blocs[4]);
+        route = '../cr/';
         break;
     }
 
@@ -65,10 +75,18 @@ class HomeController {
   }
 
   static void handleTanquesBloc(int ccusto, Bloc bloc) {
-    // if (bloc.state.filtredList.isEmpty) {
-    //   bloc.add(GetContasEvent());
-    // } else {
-    //   bloc.add(ContasFilterEvent(ccusto: ccusto, diaSemanaMes: 'Dia'));
-    // }
+    if (bloc.state.filtredList.isEmpty) {
+      bloc.add(GetTanquesEvent());
+    } else {
+      bloc.add(TanquesFilterEvent(ccusto: ccusto));
+    }
+  }
+
+  static void handleCRBloc(int ccusto, Bloc bloc) {
+    if (bloc.state.filtredList.isEmpty) {
+      bloc.add(GetCREvent());
+    } else {
+      bloc.add(CRFilterEvent(ccusto: ccusto, filtro: ''));
+    }
   }
 }

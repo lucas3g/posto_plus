@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
 import 'package:posto_plus/app/modules/home/presenter/controller/home_controller.dart';
@@ -23,6 +24,52 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+class BottomRoundedClipper extends CustomClipper<Path> {
+  final double borderRadius;
+
+  BottomRoundedClipper({this.borderRadius = 30});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(
+        0,
+        size.height -
+            borderRadius); // Linha reta até a parte inferior esquerda (borda bottomLeft)
+    path.quadraticBezierTo(
+      0,
+      size.height,
+      borderRadius,
+      size.height,
+    ); // Curva de Bezier quadrática para criar a borda bottomLeft arredondada
+    path.lineTo(size.width - borderRadius,
+        size.height); // Linha reta até a parte inferior direita (antes da borda bottomRight)
+    path.quadraticBezierTo(
+      size.width,
+      size.height + borderRadius,
+      size.width,
+      size.height + 200,
+    ); // Curva de Bezier quadrática para criar a borda bottomRight arredondada
+    path.lineTo(size.width, 0); // Linha reta até a parte superior direita
+    path.lineTo(borderRadius,
+        0); // Linha reta até a parte superior esquerda (antes da borda topLeft)
+    path.quadraticBezierTo(
+      0,
+      0,
+      0,
+      borderRadius,
+    ); // Curva de Bezier quadrática para criar a borda topLeft arredondada
+    path.close(); // Fecha o caminho
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
 class _HomePageState extends State<HomePage> {
   late int _currentIndex = 0;
 
@@ -34,53 +81,49 @@ class _HomePageState extends State<HomePage> {
 
   _appBar(height) {
     return PreferredSize(
-      preferredSize: Size(context.screenWidth,
-          height + (context.screenHeight == 672 ? 50 : 75)),
+      preferredSize:
+          Size(context.screenWidth, height + context.screenWidth * .25),
       child: Stack(
         children: [
-          Container(
-            height: height + (context.screenHeight == 672 ? 40 : 60),
+          SvgPicture.asset(
+            'assets/images/appbar.svg',
+            color: context.myTheme.primaryContainer,
             width: context.screenWidth,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              color: ThemeModeController.themeMode == ThemeMode.dark
-                  ? context.myTheme.primaryContainer
-                  : context.myTheme.primary.withRed(190),
-            ),
-            padding: EdgeInsets.only(
-                left: 20, top: (context.screenHeight == 672 ? 0 : 10)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                MyTitleAppBarWidget(index: _currentIndex),
-                Builder(builder: (context) {
-                  return IconButton(
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Colors.white,
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 20),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyTitleAppBarWidget(index: _currentIndex),
+                      Builder(builder: (context) {
+                        return IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          icon: const Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                          ),
+                          tooltip: MaterialLocalizations.of(context)
+                              .openAppDrawerTooltip,
+                        );
+                      }),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: DropDownWidget(
+                      ccustoBloc: widget.ccustoBloc,
                     ),
-                    tooltip:
-                        MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  );
-                }),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
-          Container(),
-          Positioned(
-            top: (context.screenHeight == 672 ? 65 : 85.0),
-            left: 20.0,
-            right: 20.0,
-            child: DropDownWidget(
-              ccustoBloc: widget.ccustoBloc,
-            ),
-          )
         ],
       ),
     );
@@ -95,59 +138,53 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: RouterOutlet(),
       ),
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-        child: GNav(
-            backgroundColor: ThemeModeController.themeMode == ThemeMode.dark
-                ? context.myTheme.primaryContainer
-                : context.myTheme.primary,
-            haptic: true, // haptic feedback
-            tabBorderRadius: 15,
-            curve: Curves.easeIn, // tab animation curves
-            duration: const Duration(milliseconds: 500),
-            gap: 8, // the tab button gap between icon and text
-            activeColor: Colors.white, // selected icon and text color
-            tabBackgroundColor: ThemeModeController.themeMode == ThemeMode.dark
-                ? context.myTheme.primaryContainer.withOpacity(0.1)
-                : context.myTheme.primary
-                    .withOpacity(0.1), // selected tab background color
-            padding: Platform.isAndroid
-                ? const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
-                : const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-            selectedIndex: _currentIndex,
-            onTabChange: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
+      bottomNavigationBar: GNav(
+          backgroundColor: ThemeModeController.themeMode == ThemeMode.dark
+              ? context.myTheme.primaryContainer
+              : context.myTheme.primary,
+          haptic: true, // haptic feedback
+          tabBorderRadius: 15,
+          curve: Curves.easeIn, // tab animation curves
+          duration: const Duration(milliseconds: 500),
+          gap: 8, // the tab button gap between icon and text
+          activeColor: Colors.white, // selected icon and text color
+          tabBackgroundColor: ThemeModeController.themeMode == ThemeMode.dark
+              ? context.myTheme.primaryContainer.withOpacity(0.1)
+              : context.myTheme.primary
+                  .withOpacity(0.1), // selected tab background color
+          padding: Platform.isAndroid
+              ? const EdgeInsets.symmetric(horizontal: 15, vertical: 15)
+              : const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+          selectedIndex: _currentIndex,
+          onTabChange: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
 
-              HomeController.navigation(index);
-            },
-            tabs: const [
-              GButton(
-                icon: Icons.attach_money_rounded,
-                text: 'Vendas',
-                iconColor: Colors.white,
-              ),
-              GButton(
-                icon: Icons.local_gas_station,
-                text: 'Tanques',
-                iconColor: Colors.white,
-              ),
-              GButton(
-                icon: Icons.account_balance_rounded,
-                text: 'Contas a Receber',
-                iconColor: Colors.white,
-              ),
-              GButton(
-                icon: Icons.payments_rounded,
-                text: 'Preço por Cliente',
-                iconColor: Colors.white,
-              ),
-            ]),
-      ),
+            HomeController.navigation(index);
+          },
+          tabs: const [
+            GButton(
+              icon: Icons.attach_money_rounded,
+              text: 'Vendas',
+              iconColor: Colors.white,
+            ),
+            GButton(
+              icon: Icons.local_gas_station,
+              text: 'Tanques',
+              iconColor: Colors.white,
+            ),
+            GButton(
+              icon: Icons.account_balance_rounded,
+              text: 'Contas a Receber',
+              iconColor: Colors.white,
+            ),
+            GButton(
+              icon: Icons.payments_rounded,
+              text: 'Preço por Cliente',
+              iconColor: Colors.white,
+            ),
+          ]),
     );
   }
 }

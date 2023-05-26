@@ -33,11 +33,4 @@ class LicenseDatasource implements ILicenseDatasource {
 
     return response.data;
   }
-
-  @override
-  Future<List<Map<String, dynamic>>> getDateLicense() async {
-    final result = await localStorage.getData('LICENSE');
-
-    return result;
-  }
 }

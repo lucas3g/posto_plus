@@ -14,7 +14,7 @@ class LoadingWidget extends StatelessWidget {
       height: size.height,
       child: Shimmer.fromColors(
         baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade200,
+        highlightColor: Colors.grey.shade400,
         child: Container(
           margin: const EdgeInsets.only(top: 0.3, right: 0.5),
           decoration: BoxDecoration(

@@ -6,6 +6,6 @@ class PlatformDeviceInfo implements IDeviceInfo {
   Future<DeviceInfo> getDeviceInfo() async {
     final id = await PlatformDeviceId.getDeviceId;
 
-    return DeviceInfo(deviceID: id ?? '');
+    return DeviceInfo(deviceID: id?.trim() ?? '');
   }
 }

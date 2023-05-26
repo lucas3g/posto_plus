@@ -16,14 +16,15 @@
             "name": "[prod] posto_plus",
             "request": "launch",
             "type": "dart",
-            // "args": [
-            //     "--release"
-            // ],
+            "args": [
+                "--release"
+            ],
             "toolArgs": [
                 "--dart-define",
                 "BASE_URL_LICENSE=http://54.94.115.42/api",
                 "--dart-define",
-                "BASE_URL=http://elinfo2.jelastic.saveincloud.net/AppPostoPlus",
+                //"BASE_URL=http://elinfo2.jelastic.saveincloud.net/AppPostoPlus",
+                "BASE_URL=http://192.168.254.10/firebird/AppPostoPlus",
             ]
         },
     ]

@@ -74,6 +74,20 @@ class _BodyVendasWidgetState extends State<BodyVendasWidget> {
 
             final vendas = state.filtredList;
 
+            if (vendas.isEmpty) {
+              return Column(
+                children: const [
+                  Expanded(
+                    child: LoadingWidget(
+                      size: Size(double.maxFinite, 40),
+                      radius: 10,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                ],
+              );
+            }
+
             return SfCartesianChart(
               tooltipBehavior: TooltipBehavior(
                 enable: true,

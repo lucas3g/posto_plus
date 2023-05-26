@@ -23,24 +23,7 @@ class LicenseRepository implements ILicenseRepository {
 
       return LicenseAdapter.fromMap(result).toSuccess();
     } on DioError catch (e) {
-      return MyException(message: e.message!).toFailure();
-    } on IMyException catch (e) {
-      return MyException(message: e.message).toFailure();
-    } catch (e) {
-      return MyException(message: e.toString()).toFailure();
-    }
-  }
-
-  @override
-  Future<Result<DateTime, IMyException>> getDateLicense() async {
-    try {
-      final result = await datasource.getDateLicense();
-
-      final date = DateTime.parse(
-        result[0]['DATA'].toString().replaceAll('/', '-'),
-      );
-
-      return date.toSuccess();
+      return MyException(message: e.message ?? '').toFailure();
     } on IMyException catch (e) {
       return MyException(message: e.message).toFailure();
     } catch (e) {

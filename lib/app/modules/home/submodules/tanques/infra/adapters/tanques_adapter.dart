@@ -7,7 +7,7 @@ class TanquesAdapter {
       id: const IdVO(1),
       ccusto: int.parse(map['CCUSTO'].toString()),
       descricao: map['DESCRICAO'],
-      descResumida: map['DESCRESUMIDA'],
+      descResumida: map['DESC_RESUMIDA'],
       capacidade: int.parse(map['CAPACIDADE'].toString()),
       tanque: int.parse(map['TANQUE'].toString()),
       volume: double.parse(map['VOLUME'].toString()),

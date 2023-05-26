@@ -7,17 +7,19 @@ import 'package:posto_plus/app/core_module/vos/text_vo.dart';
 class Tanques extends Entity {
   final IdVO _ccusto;
   final TextVO _descricao;
-  final TextVO _descResumida;
+  TextVO _descResumida;
   final IntVO _capacidade;
   final IntVO _tanque;
-  final DoubleVO _volume;
+  DoubleVO _volume;
 
   IdVO get ccusto => _ccusto;
   TextVO get descricao => _descricao;
   TextVO get descResumida => _descResumida;
+  void setDescResumida(String value) => _descResumida = TextVO(value);
   IntVO get capacidade => _capacidade;
   IntVO get tanque => _tanque;
   DoubleVO get volume => _volume;
+  void setVolume(double value) => _volume = DoubleVO(value);
 
   Tanques({
     required super.id,

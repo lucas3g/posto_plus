@@ -89,7 +89,9 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                   items: ccustos.map((local) {
                     return DropdownMenuItem(
                       value: local.ccusto.value,
-                      child: Text(local.descricao.value),
+                      child: Text(
+                        local.descricao.value,
+                      ),
                     );
                   }).toList(),
                 );

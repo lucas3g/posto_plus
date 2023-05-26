@@ -5,7 +5,6 @@ import 'package:posto_plus/app/core_module/services/device_info/device_info_inte
 import 'package:posto_plus/app/core_module/services/device_info/platform_device_info.dart';
 import 'package:posto_plus/app/core_module/services/license/bloc/license_bloc.dart';
 import 'package:posto_plus/app/core_module/services/license/domain/repositories/license_repository.dart';
-import 'package:posto_plus/app/core_module/services/license/domain/usecases/get_date_license_usecase.dart';
 import 'package:posto_plus/app/core_module/services/license/domain/usecases/verify_license_usecase.dart';
 import 'package:posto_plus/app/core_module/services/license/external/license_datasource.dart';
 import 'package:posto_plus/app/core_module/services/license/infra/datasources/license_datasource.dart';
@@ -79,17 +78,9 @@ class CoreModule extends Module {
       export: true,
     ),
 
-    Bind.factory<IGetDateLicenseUseCase>(
-      (i) => GetDateLicenseUseCase(
-        repository: i(),
-      ),
-      export: true,
-    ),
-
     BlocBind.factory<LicenseBloc>(
       (i) => LicenseBloc(
         verifyLicenseUseCase: i(),
-        getDateLicenseUseCase: i(),
       ),
       export: true,
     ),

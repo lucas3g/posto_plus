@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:modular_bloc_bind/modular_bloc_bind.dart';
 import 'package:posto_plus/app/modules/home/presenter/home_page.dart';
+import 'package:posto_plus/app/modules/home/submodules/cr/cr_module.dart';
 import 'package:posto_plus/app/modules/home/submodules/tanques/tanques_module.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/vendas_module.dart';
 import 'package:posto_plus/app/shared/components/drop_down_widget/domain/repositories/ccusto_repository.dart';
@@ -30,6 +31,7 @@ class HomeModule extends Module {
   final List<Module> imports = [
     VendasModule(),
     TanquesModule(),
+    CRModule(),
   ];
 
   @override
@@ -72,6 +74,7 @@ class HomeModule extends Module {
         children: [
           configuraModule('/vendas', module: VendasModule()),
           configuraModule('/tanques', module: TanquesModule()),
+          configuraModule('/cr', module: CRModule()),
         ])
   ];
 }

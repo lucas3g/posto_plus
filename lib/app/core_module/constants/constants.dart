@@ -19,6 +19,7 @@ const urlProjecao = 'vendas/projecao';
 const urlGrafico = 'vendas/grafico';
 const urlVendas = 'vendas/vendas';
 const urlTanques = 'tanques/volume';
+const urlCR = 'saldo/saldo';
 
 class GlobalUser {
   GlobalUser._();
