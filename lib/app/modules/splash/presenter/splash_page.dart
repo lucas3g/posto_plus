@@ -28,7 +28,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  late LicenseBloc licenseBloc;
+  LicenseBloc? licenseBloc;
   late dynamic user;
 
   late StreamSubscription sub;
@@ -69,7 +69,7 @@ class _SplashPageState extends State<SplashPage> {
 
   Future _initLicenseBloc() async {
     licenseBloc = Modular.get<LicenseBloc>();
-    licenseBloc
+    licenseBloc!
         .add(VerifyLicenseEvent(deviceInfo: GlobalDevice.instance.deviceInfo));
   }
 
@@ -92,33 +92,35 @@ class _SplashPageState extends State<SplashPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await init();
 
-      sub = licenseBloc.stream.listen((state) {
-        if (state is LicenseNotActive) {
-          BotToast.closeAllLoading();
-          BotToast.cleanAll();
-          MySnackBar(
-            title: 'Ops...',
-            message:
-                'Licença não esta ativa. Por favor, entre em contato com o suporte',
-            type: ContentType.warning,
-          );
-          Modular.to.navigate('/auth/');
-          return;
-        }
+      if (licenseBloc != null) {
+        sub = licenseBloc!.stream.listen((state) {
+          if (state is LicenseNotActive) {
+            BotToast.closeAllLoading();
+            BotToast.cleanAll();
+            MySnackBar(
+              title: 'Ops...',
+              message:
+                  'Licença não esta ativa. Por favor, entre em contato com o suporte',
+              type: ContentType.warning,
+            );
+            Modular.to.navigate('/auth/');
+            return;
+          }
 
-        if (state is LicenseNotFound) {
-          BotToast.closeAllLoading();
-          BotToast.cleanAll();
-          MySnackBar(
-            title: 'Ops...',
-            message:
-                'Licença não encontrada. Por favor, entre em contato com o suporte',
-            type: ContentType.warning,
-          );
-          Modular.to.navigate('/auth/');
-          return;
-        }
-      });
+          if (state is LicenseNotFound) {
+            BotToast.closeAllLoading();
+            BotToast.cleanAll();
+            MySnackBar(
+              title: 'Ops...',
+              message:
+                  'Licença não encontrada. Por favor, entre em contato com o suporte',
+              type: ContentType.warning,
+            );
+            Modular.to.navigate('/auth/');
+            return;
+          }
+        });
+      }
     });
   }
 

@@ -29,8 +29,12 @@ class AuthDatasource implements IAuthDatasource {
       throw const MyException(message: 'Erro ao tentar fazer login.');
     }
 
+    if (result.data == null) {
+      throw const MyException(message: 'Usuário ou senha incorretos.');
+    }
+
     if (result.data.toString().trim() == '[]') {
-      throw const MyException(message: 'Usuário ou senha incorreta.');
+      throw const MyException(message: 'Usuário ou senha incorretos.');
     }
 
     if (jsonDecode(result.data)['APP_POSTO'] == 'N') {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
+import 'package:posto_plus/app/modules/home/presenter/controller/home_controller.dart';
 import 'package:posto_plus/app/modules/home/presenter/widgets/my_drawer_widget.dart';
 import 'package:posto_plus/app/modules/home/presenter/widgets/my_title_app_bar_widget.dart';
 import 'package:posto_plus/app/shared/components/drop_down_widget/presenter/bloc/ccusto_bloc.dart';
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Container(),
           Positioned(
-            top: (context.screenHeight == 672 ? 65 : 88.0),
+            top: (context.screenHeight == 672 ? 65 : 85.0),
             left: 20.0,
             right: 20.0,
             child: DropDownWidget(
@@ -121,6 +122,8 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 _currentIndex = index;
               });
+
+              HomeController.navigation(index);
             },
             tabs: const [
               GButton(
