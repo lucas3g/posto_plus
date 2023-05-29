@@ -42,7 +42,7 @@ class _MyDropDownButtonWidgetState<T> extends State<MyDropDownButtonWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final appStore = context.watchModular<AppStore>(
+    final appStore = context.watch<AppStore>(
       (store) => store.themeMode,
     );
 

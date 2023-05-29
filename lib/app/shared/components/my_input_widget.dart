@@ -56,7 +56,7 @@ class MyInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appStore = context.watchModular<AppStore>(
+    final appStore = context.watch<AppStore>(
       (store) => store.themeMode,
     );
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:posto_plus/app/core_module/constants/constants.dart';
+import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
 import 'package:posto_plus/app/modules/home/submodules/preco_cliente/presenter/bloc/events/preco_cliente_events.dart';
 import 'package:posto_plus/app/modules/home/submodules/preco_cliente/presenter/bloc/preco_cliente_bloc.dart';
 import 'package:posto_plus/app/modules/home/submodules/preco_cliente/presenter/bloc/states/preco_cliente_states.dart';
 import 'package:posto_plus/app/shared/components/my_input_widget.dart';
-import 'package:posto_plus/app/shared/stores/app_store.dart';
 import 'package:posto_plus/app/utils/constants.dart';
 import 'package:posto_plus/app/utils/formatters.dart';
 import 'package:posto_plus/app/utils/loading_widget.dart';
@@ -26,10 +25,6 @@ class PrecoClientePage extends StatefulWidget {
 class _PrecoClientePageState extends State<PrecoClientePage> {
   @override
   Widget build(BuildContext context) {
-    final appStore = context.watchModular<AppStore>(
-      (store) => store.themeMode,
-    );
-
     return Scaffold(
       body: Column(
         children: [
@@ -90,7 +85,8 @@ class _PrecoClientePageState extends State<PrecoClientePage> {
                             left: BorderSide(
                               width: 8,
                               color: cliente.tipo.value == 'VALOR'
-                                  ? appStore.themeMode.value == ThemeMode.dark
+                                  ? ThemeModeController.themeMode ==
+                                          ThemeMode.dark
                                       ? context.myTheme.primaryContainer
                                       : context.myTheme.primary
                                   : Colors.blue.shade700,
@@ -98,7 +94,8 @@ class _PrecoClientePageState extends State<PrecoClientePage> {
                             right: BorderSide(
                               width: 8,
                               color: cliente.tipo.value == 'VALOR'
-                                  ? appStore.themeMode.value == ThemeMode.dark
+                                  ? ThemeModeController.themeMode ==
+                                          ThemeMode.dark
                                       ? context.myTheme.primaryContainer
                                       : context.myTheme.primary
                                   : Colors.blue.shade700,
@@ -124,7 +121,7 @@ class _PrecoClientePageState extends State<PrecoClientePage> {
                                   SizedBox(
                                     height: 15,
                                     child: VerticalDivider(
-                                      color: appStore.themeMode.value ==
+                                      color: ThemeModeController.themeMode ==
                                               ThemeMode.dark
                                           ? Colors.white
                                           : context.myTheme.onBackground,
