@@ -16,6 +16,7 @@ import 'package:posto_plus/app/core_module/services/license/bloc/states/license_
 import 'package:posto_plus/app/core_module/services/shared_preferences/adapters/shared_params.dart';
 import 'package:posto_plus/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
+import 'package:posto_plus/app/core_module/vos/id_vo.dart';
 import 'package:posto_plus/app/modules/auth/domain/entities/user.dart';
 import 'package:posto_plus/app/modules/auth/infra/adapters/user_adapter.dart';
 import 'package:posto_plus/app/modules/auth/presenter/bloc/auth_bloc.dart';
@@ -170,6 +171,88 @@ class _AuthPageState extends State<AuthPage> {
         deviceInfo: GlobalDevice.instance.deviceInfo,
       ),
     );
+  }
+
+  void mostraDialogDemonstracao() {
+    showDialog(
+        context: context,
+        barrierColor: Colors.black.withOpacity(0.1),
+        builder: (_) {
+          return AlertDialog(
+            elevation: 8,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Atenção',
+                  style: context.textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const Divider(),
+                Text(
+                  'Você irá iniciar uma versão de demonstração os dados são meramente fictícios.',
+                  textAlign: TextAlign.center,
+                  style: context.textTheme.bodyLarge,
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: MyElevatedButtonWidget(
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true)
+                              .pop('dialog');
+                        },
+                        label: Row(
+                          children: const [
+                            Icon(Icons.cancel_rounded),
+                            SizedBox(width: 10),
+                            Text('Não'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: MyElevatedButtonWidget(
+                        onPressed: () async {
+                          Navigator.of(context, rootNavigator: true)
+                              .pop('dialog');
+
+                          await shared.setData(
+                            params: SharedParams(
+                              key: 'user',
+                              value: UserAdapter.toJson(
+                                User(
+                                  id: const IdVO(1),
+                                  cnpj: '97.305.890/0001-81',
+                                  login: 'ADM',
+                                  senha: 'EL',
+                                  nome: 'DEMONSTRAÇÃO',
+                                ),
+                              ),
+                            ),
+                          );
+
+                          Modular.to.navigate('/home/');
+                        },
+                        label: Row(
+                          children: const [
+                            Icon(Icons.done_rounded),
+                            SizedBox(width: 10),
+                            Text('Iniciar'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
@@ -330,41 +413,13 @@ class _AuthPageState extends State<AuthPage> {
                             ),
                           ],
                         ),
-                        // ListTile(
-                        //   minLeadingWidth: 2,
-                        //   leading: Icon(
-                        //     ThemeModeController.appStore.themeMode.value ==
-                        //             ThemeMode.dark
-                        //         ? Icons.dark_mode
-                        //         : Icons.light_mode,
-                        //     color:
-                        //         ThemeModeController.appStore.themeMode.value ==
-                        //                 ThemeMode.dark
-                        //             ? context.myTheme.primaryContainer
-                        //             : context.myTheme.error,
-                        //   ),
-                        //   title: Text(
-                        //     ThemeModeController.appStore.themeMode.value ==
-                        //             ThemeMode.dark
-                        //         ? 'Dark'
-                        //         : 'Light',
-                        //   ),
-                        //   onTap: () {
-                        //     ThemeModeController.appStore.changeThemeMode(
-                        //       ThemeModeController.appStore.themeMode.value ==
-                        //               ThemeMode.dark
-                        //           ? ThemeMode.light
-                        //           : ThemeMode.dark,
-                        //     );
-                        //   },
-                        // ),
                       ],
                     ),
                   ),
                   Column(
                     children: [
                       TextButton(
-                        onPressed: () {},
+                        onPressed: mostraDialogDemonstracao,
                         child: Text(
                           'Versão de demonstração',
                           style: context.textTheme.labelLarge,

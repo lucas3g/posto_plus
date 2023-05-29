@@ -20,7 +20,7 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final appStore = context.watch<AppStore>(
+    final appStore = context.watchModular<AppStore>(
       (store) => store.themeMode,
     );
 

@@ -16,7 +16,7 @@ class AppWidget extends StatelessWidget {
       BotToastNavigatorObserver(),
     ]);
 
-    final appStore = context.watch<AppStore>(
+    final appStore = context.watchModular<AppStore>(
       (store) => store.themeMode,
     );
 

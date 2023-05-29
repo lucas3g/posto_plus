@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:posto_plus/app/modules/home/submodules/cr/presenter/blocs/cr_bloc.dart';
 import 'package:posto_plus/app/modules/home/submodules/cr/presenter/blocs/events/cr_events.dart';
+import 'package:posto_plus/app/modules/home/submodules/preco_cliente/presenter/bloc/events/preco_cliente_events.dart';
+import 'package:posto_plus/app/modules/home/submodules/preco_cliente/presenter/bloc/preco_cliente_bloc.dart';
 import 'package:posto_plus/app/modules/home/submodules/tanques/presenter/bloc/events/tanques_events.dart';
 import 'package:posto_plus/app/modules/home/submodules/tanques/presenter/bloc/tanques_bloc.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/events/grafico_events.dart';
@@ -22,6 +24,7 @@ class HomeController {
       Modular.get<GraficoBloc>(),
       Modular.get<TanquesBloc>(),
       Modular.get<CRBloc>(),
+      Modular.get<PrecoClienteBloc>(),
     ];
 
     late String route = '';
@@ -40,7 +43,7 @@ class HomeController {
         route = '../cr/';
         break;
       case 3:
-        //handleCRBloc(ccusto, blocs[4]);
+        handlePrecoClienteBloc(ccusto, blocs[5]);
         route = '../preco/';
         break;
     }
@@ -91,6 +94,14 @@ class HomeController {
       bloc.add(GetCREvent());
     } else {
       bloc.add(CRFilterEvent(ccusto: ccusto, filtro: ''));
+    }
+  }
+
+  static void handlePrecoClienteBloc(int ccusto, Bloc bloc) {
+    if (bloc.state.filtredList.isEmpty) {
+      bloc.add(GetPrecosEvent());
+    } else {
+      bloc.add(PrecoClienteFilterEvent(filtro: ''));
     }
   }
 }

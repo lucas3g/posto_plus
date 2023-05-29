@@ -92,8 +92,7 @@ class _TanquesPageState extends State<TanquesPage> {
                             Expanded(
                               child: Text(
                                 'Combustível',
-                                style:
-                                    context.textTheme.headlineSmall!.copyWith(
+                                style: context.textTheme.titleLarge!.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -101,8 +100,7 @@ class _TanquesPageState extends State<TanquesPage> {
                             Expanded(
                               child: Text(
                                 'Quantidade',
-                                style:
-                                    context.textTheme.headlineSmall!.copyWith(
+                                style: context.textTheme.titleLarge!.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.end,
@@ -122,11 +120,12 @@ class _TanquesPageState extends State<TanquesPage> {
                                     Expanded(
                                       child: Text(
                                         e.descricao.value,
-                                        style: const TextStyle(fontSize: 16),
+                                        style: context.textTheme.bodyLarge,
                                       ),
                                     ),
                                     Text(
                                       e.volume.value.Litros(),
+                                      style: context.textTheme.bodyLarge,
                                       textAlign: TextAlign.end,
                                     ),
                                   ],

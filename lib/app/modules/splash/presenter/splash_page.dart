@@ -44,11 +44,13 @@ class _SplashPageState extends State<SplashPage> {
     if (user != null) {
       final userLogado = UserAdapter.fromMap(jsonDecode(user));
 
-      if (userLogado.cnpj.value.contains('97305890')) {
+      if (userLogado.cnpj.value.contains('97.305.890')) {
         user = null;
         shared.removeData('user');
         Modular.to.navigate('/auth/');
 
+        BotToast.closeAllLoading();
+        BotToast.cleanAll();
         return;
       }
 
