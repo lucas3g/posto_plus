@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
 import 'package:posto_plus/app/modules/home/presenter/controller/home_controller.dart';
@@ -27,7 +26,7 @@ class HomePage extends StatefulWidget {
 class BottomRoundedClipper extends CustomClipper<Path> {
   final double borderRadius;
 
-  BottomRoundedClipper({this.borderRadius = 30});
+  BottomRoundedClipper({this.borderRadius = 65});
 
   @override
   Path getClip(Size size) {
@@ -38,27 +37,33 @@ class BottomRoundedClipper extends CustomClipper<Path> {
             borderRadius); // Linha reta até a parte inferior esquerda (borda bottomLeft)
     path.quadraticBezierTo(
       0,
-      size.height,
+      size.height - 25,
       borderRadius,
-      size.height,
+      size.height - 25,
     ); // Curva de Bezier quadrática para criar a borda bottomLeft arredondada
-    path.lineTo(size.width - borderRadius,
-        size.height); // Linha reta até a parte inferior direita (antes da borda bottomRight)
+    path.lineTo(
+        size.width - borderRadius,
+        size.height -
+            25); // Linha reta até a parte inferior direita (antes da borda bottomRight)
+
     path.quadraticBezierTo(
       size.width,
-      size.height + borderRadius,
+      size.height - 25,
       size.width,
-      size.height + 200,
-    ); // Curva de Bezier quadrática para criar a borda bottomRight arredondada
+      size.height,
+    ); // Curva de Bezier quadrática para criar a borda bottomRight arredondada para dentro
+
     path.lineTo(size.width, 0); // Linha reta até a parte superior direita
-    path.lineTo(borderRadius,
-        0); // Linha reta até a parte superior esquerda (antes da borda topLeft)
+
+    path.lineTo(0, 0);
+
     path.quadraticBezierTo(
       0,
       0,
       0,
       borderRadius,
     ); // Curva de Bezier quadrática para criar a borda topLeft arredondada
+
     path.close(); // Fecha o caminho
 
     return path;
@@ -82,49 +87,46 @@ class _HomePageState extends State<HomePage> {
   _appBar(height) {
     return PreferredSize(
       preferredSize:
-          Size(context.screenWidth, height + context.screenWidth * .25),
-      child: Stack(
-        children: [
-          SvgPicture.asset(
-            'assets/images/appbar.svg',
-            color: context.myTheme.primaryContainer,
-            width: context.screenWidth,
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 20),
-            child: SafeArea(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      MyTitleAppBarWidget(index: _currentIndex),
-                      Builder(builder: (context) {
-                        return IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          icon: const Icon(
-                            Icons.settings,
-                            color: Colors.white,
-                          ),
-                          tooltip: MaterialLocalizations.of(context)
-                              .openAppDrawerTooltip,
-                        );
-                      }),
-                    ],
+          Size(context.screenWidth, height + (Platform.isIOS ? 50 : 90)),
+      child: ClipPath(
+        clipper: BottomRoundedClipper(),
+        child: Container(
+          color: ThemeModeController.themeMode == ThemeMode.dark
+              ? context.myTheme.primaryContainer
+              : context.myTheme.primary,
+          padding: const EdgeInsets.only(left: 20),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyTitleAppBarWidget(index: _currentIndex),
+                    Builder(builder: (context) {
+                      return IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        icon: const Icon(
+                          Icons.settings,
+                          color: Colors.white,
+                        ),
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      );
+                    }),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: DropDownWidget(
+                    ccustoBloc: widget.ccustoBloc,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: DropDownWidget(
-                      ccustoBloc: widget.ccustoBloc,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

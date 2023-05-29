@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posto_plus/app/core_module/constants/constants.dart';
 import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
 import 'package:posto_plus/app/modules/home/submodules/cr/domain/entities/cr.dart';
 import 'package:posto_plus/app/utils/constants.dart';
@@ -31,7 +32,7 @@ class _MyListTileCRWidgetState extends State<MyListTileCRWidget> {
             widget.cr.valor.value.reais(),
             style: ThemeModeController.themeMode == ThemeMode.dark
                 ? context.textTheme.bodyLarge!.copyWith(
-                    color: const Color(0xffCB5252),
+                    color: labelRed,
                     fontWeight: FontWeight.bold,
                   )
                 : context.textTheme.bodyLarge!.copyWith(

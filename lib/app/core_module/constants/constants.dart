@@ -14,12 +14,14 @@ const baseUrlLicense = String.fromEnvironment('BASE_URL_LICENSE');
 const pathLogo = 'assets/images/logo.svg';
 
 const backgroundBlack = Color(0xFF202123);
+const labelRed = Color(0xffCB5252);
 
 const urlProjecao = 'vendas/projecao';
 const urlGrafico = 'vendas/grafico';
 const urlVendas = 'vendas/vendas';
 const urlTanques = 'tanques/volume';
 const urlCR = 'saldo/saldo';
+const urlPreco = 'preco/precos';
 
 class GlobalUser {
   GlobalUser._();

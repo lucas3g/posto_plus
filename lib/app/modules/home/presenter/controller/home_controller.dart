@@ -39,6 +39,10 @@ class HomeController {
         handleCRBloc(ccusto, blocs[4]);
         route = '../cr/';
         break;
+      case 3:
+        //handleCRBloc(ccusto, blocs[4]);
+        route = '../preco/';
+        break;
     }
 
     Modular.to.pushReplacementNamed(route);

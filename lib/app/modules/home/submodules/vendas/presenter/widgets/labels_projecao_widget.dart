@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
 import 'package:posto_plus/app/utils/constants.dart';
 import 'package:posto_plus/app/utils/formatters.dart';
 
@@ -23,6 +24,9 @@ class LabelsProjecaoWidget extends StatelessWidget {
           title,
           style: context.textTheme.bodyMedium!.copyWith(
             fontWeight: FontWeight.bold,
+            color: ThemeModeController.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
           ),
         ),
         Text(
