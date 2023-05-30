@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -255,17 +256,61 @@ class _AuthPageState extends State<AuthPage> {
         });
   }
 
+  void licencaDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return MyAlertDialogWidget(
+          title: 'Código de Autenticação',
+          content: GlobalDevice.instance.deviceInfo.deviceID,
+          subContent:
+              'Se você já tem uma licença. Por favor, ignore essa mensagem.',
+          okButton: MyElevatedButtonWidget(
+            height: 45,
+            label: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.message_rounded),
+                SizedBox(width: 5),
+                Flexible(child: Text('WhatsApp')),
+              ],
+            ),
+            onPressed: () {
+              AuthController.openWhatsapp(
+                text:
+                    'Olá, desejo usar o aplicativo do Posto Plus esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
+                number: '+555499712433',
+              );
+            },
+          ),
+          cancelButton: MyElevatedButtonWidget(
+            height: 45,
+            label: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.close),
+                SizedBox(width: 5),
+                Text('Fechar'),
+              ],
+            ),
+            onPressed: () {
+              Modular.to.pop('dialog');
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(kPadding),
-        width: context.screenWidth,
-        height: context.screenHeight,
-        child: SafeArea(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(kPadding),
           child: SingleChildScrollView(
             child: SizedBox(
-              height: context.screenHeight * .91,
+              height: context.screenHeight * (Platform.isAndroid ? .91 : .88),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -277,143 +322,95 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   Form(
                     key: gkForm,
-                    child: Column(
-                      children: [
-                        // const Text('Entre com sua conta'),
-                        // const SizedBox(height: 10),
-                        MyInputWidget(
-                          focusNode: fCNPJ,
-                          label: 'CNPJ',
-                          hintText: 'Digite o CNPJ da empresa',
-                          validator: (v) {
-                            late String? result;
+                    child: Center(
+                      child: Column(
+                        children: [
+                          MyInputWidget(
+                            focusNode: fCNPJ,
+                            label: 'CNPJ',
+                            hintText: 'Digite o CNPJ da empresa',
+                            validator: (v) {
+                              late String? result;
 
-                            result =
-                                user.cnpj.validate('CNPJ').exceptionOrNull();
+                              result =
+                                  user.cnpj.validate('CNPJ').exceptionOrNull();
 
-                            if (result != null) {
+                              if (result != null) {
+                                return result;
+                              }
+
+                              if (!CNPJValidator.isValid(v)) {
+                                result = 'CNPJ inválido';
+                              }
                               return result;
-                            }
-
-                            if (!CNPJValidator.isValid(v)) {
-                              result = 'CNPJ inválido';
-                            }
-                            return result;
-                          },
-                          value: user.cnpj.value,
-                          onChanged: (v) => user.setCNPJ(v),
-                          keyboardType: TextInputType.number,
-                          inputFormaters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            CnpjInputFormatter(),
-                          ],
-                          onFieldSubmitted: (v) => fUsuario.requestFocus(),
-                        ),
-                        const SizedBox(height: 10),
-                        MyInputWidget(
-                          focusNode: fUsuario,
-                          label: 'Usuário',
-                          hintText: 'Digite seu usuário',
-                          validator: (v) =>
-                              user.login.validate('Usuário').exceptionOrNull(),
-                          value: user.login.value,
-                          onChanged: (v) => user.setLogin(v),
-                          inputFormaters: [UpperCaseTextFormatter()],
-                          onFieldSubmitted: (v) => fSenha.requestFocus(),
-                        ),
-                        const SizedBox(height: 10),
-                        MyInputWidget(
-                          focusNode: fSenha,
-                          obscureText: true,
-                          maxLines: 1,
-                          label: 'Senha',
-                          hintText: 'Digite sua senha',
-                          validator: (v) =>
-                              user.senha.validate('Senha').exceptionOrNull(),
-                          value: user.senha.value,
-                          onChanged: (v) => user.setSenha(v),
-                          inputFormaters: [UpperCaseTextFormatter()],
-                          onFieldSubmitted: (v) {
-                            initLogin();
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        BlocBuilder<LicenseBloc, LicenseStates>(
-                            bloc: widget.licenseBloc,
-                            builder: (context, licenseState) {
-                              return BlocBuilder<AuthBloc, AuthStates>(
-                                bloc: widget.authBloc,
-                                builder: (context, state) {
-                                  return MyElevatedButtonWidget(
-                                    height: 40,
-                                    label: retornaLogin(state, licenseState),
-                                    onPressed: () {
-                                      initLogin();
-                                    },
-                                  );
-                                },
-                              );
-                            }),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return MyAlertDialogWidget(
-                                      title: 'Código de Autenticação',
-                                      content: GlobalDevice
-                                          .instance.deviceInfo.deviceID,
-                                      subContent:
-                                          'Se você já tem uma licença. Por favor, ignore essa mensagem.',
-                                      okButton: MyElevatedButtonWidget(
-                                        height: 45,
-                                        label: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            Icon(Icons.message_rounded),
-                                            SizedBox(width: 5),
-                                            Flexible(child: Text('WhatsApp')),
-                                          ],
-                                        ),
-                                        onPressed: () {
-                                          AuthController.openWhatsapp(
-                                            text:
-                                                'Olá, desejo usar o aplicativo do Posto Plus esse é meu codigo de autenticação: ${GlobalDevice.instance.deviceInfo.deviceID}',
-                                            number: '+555499712433',
-                                          );
-                                        },
-                                      ),
-                                      cancelButton: MyElevatedButtonWidget(
-                                        height: 45,
-                                        label: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            Icon(Icons.close),
-                                            SizedBox(width: 5),
-                                            Text('Fechar'),
-                                          ],
-                                        ),
-                                        onPressed: () {
-                                          Modular.to.pop('dialog');
-                                        },
-                                      ),
+                            },
+                            value: user.cnpj.value,
+                            onChanged: (v) => user.setCNPJ(v),
+                            keyboardType: TextInputType.number,
+                            inputFormaters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              CnpjInputFormatter(),
+                            ],
+                            onFieldSubmitted: (v) => fUsuario.requestFocus(),
+                          ),
+                          const SizedBox(height: 10),
+                          MyInputWidget(
+                            focusNode: fUsuario,
+                            label: 'Usuário',
+                            hintText: 'Digite seu usuário',
+                            validator: (v) => user.login
+                                .validate('Usuário')
+                                .exceptionOrNull(),
+                            value: user.login.value,
+                            onChanged: (v) => user.setLogin(v),
+                            inputFormaters: [UpperCaseTextFormatter()],
+                            onFieldSubmitted: (v) => fSenha.requestFocus(),
+                          ),
+                          const SizedBox(height: 10),
+                          MyInputWidget(
+                            focusNode: fSenha,
+                            obscureText: true,
+                            maxLines: 1,
+                            label: 'Senha',
+                            hintText: 'Digite sua senha',
+                            validator: (v) =>
+                                user.senha.validate('Senha').exceptionOrNull(),
+                            value: user.senha.value,
+                            onChanged: (v) => user.setSenha(v),
+                            inputFormaters: [UpperCaseTextFormatter()],
+                            onFieldSubmitted: (v) {
+                              initLogin();
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          BlocBuilder<LicenseBloc, LicenseStates>(
+                              bloc: widget.licenseBloc,
+                              builder: (context, licenseState) {
+                                return BlocBuilder<AuthBloc, AuthStates>(
+                                  bloc: widget.authBloc,
+                                  builder: (context, state) {
+                                    return MyElevatedButtonWidget(
+                                      height: 40,
+                                      label: retornaLogin(state, licenseState),
+                                      onPressed: initLogin,
                                     );
                                   },
                                 );
-                              },
-                              child: Text(
-                                'Licença para acessar',
-                                style: context.textTheme.labelLarge,
+                              }),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                onPressed: licencaDialog,
+                                child: Text(
+                                  'Licença para acessar',
+                                  style: context.textTheme.labelLarge,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Column(
