@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:posto_plus/app/core_module/constants/constants.dart';
 import 'package:posto_plus/app/core_module/services/device_info/device_info_interface.dart';
 import 'package:posto_plus/app/core_module/services/license/bloc/events/license_events.dart';
@@ -271,9 +271,9 @@ class _AuthPageState extends State<AuthPage> {
             label: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                Icon(Icons.message_rounded),
+                Icon(LineIcons.whatSApp),
                 SizedBox(width: 5),
-                Flexible(child: Text('WhatsApp')),
+                Text('Whats'),
               ],
             ),
             onPressed: () {
