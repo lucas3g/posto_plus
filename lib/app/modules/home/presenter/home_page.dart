@@ -86,8 +86,7 @@ class _HomePageState extends State<HomePage> {
 
   _appBar(height) {
     return PreferredSize(
-      preferredSize:
-          Size(context.screenWidth, height + (Platform.isIOS ? 50 : 90)),
+      preferredSize: Size(context.screenWidth, height + 90),
       child: ClipPath(
         clipper: BottomRoundedClipper(),
         child: Container(

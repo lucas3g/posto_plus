@@ -98,6 +98,7 @@ class _VendasPageState extends State<VendasPage> {
               projecaoBloc: widget.projecaoBloc,
             ),
           ),
+          const SizedBox(height: 5),
           Expanded(
             flex: 4,
             child: BodyVendasWidget(

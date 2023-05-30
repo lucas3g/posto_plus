@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
-import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -207,6 +206,7 @@ class _AuthPageState extends State<AuthPage> {
                               .pop('dialog');
                         },
                         label: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             Icon(Icons.cancel_rounded),
                             SizedBox(width: 10),
@@ -240,6 +240,7 @@ class _AuthPageState extends State<AuthPage> {
                           Modular.to.navigate('/home/');
                         },
                         label: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             Icon(Icons.done_rounded),
                             SizedBox(width: 10),
@@ -305,128 +306,130 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(kPadding),
-          child: SingleChildScrollView(
-            child: SizedBox(
-              height: context.screenHeight * (Platform.isAndroid ? .91 : .88),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SvgPicture.asset(
-                    ThemeModeController.themeMode == ThemeMode.dark
-                        ? pathLogoDark
-                        : pathLogoLight,
-                    width: context.screenWidth,
-                  ),
-                  Form(
-                    key: gkForm,
-                    child: Center(
-                      child: Column(
-                        children: [
-                          MyInputWidget(
-                            focusNode: fCNPJ,
-                            label: 'CNPJ',
-                            hintText: 'Digite o CNPJ da empresa',
-                            validator: (v) {
-                              late String? result;
+      body: Padding(
+        padding: const EdgeInsets.only(
+          top: 20,
+          right: 20,
+          left: 20,
+        ),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: context.screenHeight * .94,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(),
+                SvgPicture.asset(
+                  ThemeModeController.themeMode == ThemeMode.dark
+                      ? pathLogoDark
+                      : pathLogoLight,
+                  width: context.screenWidth,
+                ),
+                Form(
+                  key: gkForm,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        MyInputWidget(
+                          focusNode: fCNPJ,
+                          label: 'CNPJ',
+                          hintText: 'Digite o CNPJ da empresa',
+                          validator: (v) {
+                            late String? result;
 
-                              result =
-                                  user.cnpj.validate('CNPJ').exceptionOrNull();
+                            result =
+                                user.cnpj.validate('CNPJ').exceptionOrNull();
 
-                              if (result != null) {
-                                return result;
-                              }
-
-                              if (!CNPJValidator.isValid(v)) {
-                                result = 'CNPJ inválido';
-                              }
+                            if (result != null) {
                               return result;
-                            },
-                            value: user.cnpj.value,
-                            onChanged: (v) => user.setCNPJ(v),
-                            keyboardType: TextInputType.number,
-                            inputFormaters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              CnpjInputFormatter(),
-                            ],
-                            onFieldSubmitted: (v) => fUsuario.requestFocus(),
-                          ),
-                          const SizedBox(height: 10),
-                          MyInputWidget(
-                            focusNode: fUsuario,
-                            label: 'Usuário',
-                            hintText: 'Digite seu usuário',
-                            validator: (v) => user.login
-                                .validate('Usuário')
-                                .exceptionOrNull(),
-                            value: user.login.value,
-                            onChanged: (v) => user.setLogin(v),
-                            inputFormaters: [UpperCaseTextFormatter()],
-                            onFieldSubmitted: (v) => fSenha.requestFocus(),
-                          ),
-                          const SizedBox(height: 10),
-                          MyInputWidget(
-                            focusNode: fSenha,
-                            obscureText: true,
-                            maxLines: 1,
-                            label: 'Senha',
-                            hintText: 'Digite sua senha',
-                            validator: (v) =>
-                                user.senha.validate('Senha').exceptionOrNull(),
-                            value: user.senha.value,
-                            onChanged: (v) => user.setSenha(v),
-                            inputFormaters: [UpperCaseTextFormatter()],
-                            onFieldSubmitted: (v) {
-                              initLogin();
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          BlocBuilder<LicenseBloc, LicenseStates>(
-                              bloc: widget.licenseBloc,
-                              builder: (context, licenseState) {
-                                return BlocBuilder<AuthBloc, AuthStates>(
-                                  bloc: widget.authBloc,
-                                  builder: (context, state) {
-                                    return MyElevatedButtonWidget(
-                                      height: 40,
-                                      label: retornaLogin(state, licenseState),
-                                      onPressed: initLogin,
-                                    );
-                                  },
-                                );
-                              }),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: licencaDialog,
-                                child: Text(
-                                  'Licença para acessar',
-                                  style: context.textTheme.labelLarge,
-                                ),
+                            }
+
+                            if (!CNPJValidator.isValid(v)) {
+                              result = 'CNPJ inválido';
+                            }
+                            return result;
+                          },
+                          value: user.cnpj.value,
+                          onChanged: (v) => user.setCNPJ(v),
+                          keyboardType: TextInputType.number,
+                          inputFormaters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CnpjInputFormatter(),
+                          ],
+                          onFieldSubmitted: (v) => fUsuario.requestFocus(),
+                        ),
+                        const SizedBox(height: 10),
+                        MyInputWidget(
+                          focusNode: fUsuario,
+                          label: 'Usuário',
+                          hintText: 'Digite seu usuário',
+                          validator: (v) =>
+                              user.login.validate('Usuário').exceptionOrNull(),
+                          value: user.login.value,
+                          onChanged: (v) => user.setLogin(v),
+                          inputFormaters: [UpperCaseTextFormatter()],
+                          onFieldSubmitted: (v) => fSenha.requestFocus(),
+                        ),
+                        const SizedBox(height: 10),
+                        MyInputWidget(
+                          focusNode: fSenha,
+                          obscureText: true,
+                          maxLines: 1,
+                          label: 'Senha',
+                          hintText: 'Digite sua senha',
+                          validator: (v) =>
+                              user.senha.validate('Senha').exceptionOrNull(),
+                          value: user.senha.value,
+                          onChanged: (v) => user.setSenha(v),
+                          inputFormaters: [UpperCaseTextFormatter()],
+                          onFieldSubmitted: (v) {
+                            initLogin();
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        BlocBuilder<LicenseBloc, LicenseStates>(
+                            bloc: widget.licenseBloc,
+                            builder: (context, licenseState) {
+                              return BlocBuilder<AuthBloc, AuthStates>(
+                                bloc: widget.authBloc,
+                                builder: (context, state) {
+                                  return MyElevatedButtonWidget(
+                                    height: 40,
+                                    label: retornaLogin(state, licenseState),
+                                    onPressed: initLogin,
+                                  );
+                                },
+                              );
+                            }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: licencaDialog,
+                              child: Text(
+                                'Licença para acessar',
+                                style: context.textTheme.labelLarge,
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  Column(
-                    children: [
-                      TextButton(
-                        onPressed: mostraDialogDemonstracao,
-                        child: Text(
-                          'Versão de demonstração',
-                          style: context.textTheme.labelLarge,
-                        ),
+                ),
+                Column(
+                  children: [
+                    TextButton(
+                      onPressed: mostraDialogDemonstracao,
+                      child: Text(
+                        'Versão de demonstração',
+                        style: context.textTheme.labelLarge,
                       ),
-                      const Text('EL Sistemas - 2023 - 54 3364-1588'),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const Text('EL Sistemas - 2023 - 54 3364-1588'),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
