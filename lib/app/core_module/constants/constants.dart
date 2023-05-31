@@ -30,7 +30,7 @@ final List<Color> colorsGrafico = [
   const Color(0xFF00b1ba),
   const Color(0xFF0019ba),
   const Color(0xFFb400ba),
-  const Color(0xFFb7ba00),
+  const Color(0xFFFCFF32),
   const Color(0xFF6600BA),
 ];
 
