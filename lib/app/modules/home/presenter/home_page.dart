@@ -23,37 +23,34 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class BottomRoundedClipper extends CustomClipper<Path> {
+class BackGroundAppBarClipper extends CustomClipper<Path> {
   final double borderRadius;
 
-  BottomRoundedClipper({this.borderRadius = 65});
+  BackGroundAppBarClipper({this.borderRadius = 65});
 
   @override
   Path getClip(Size size) {
     final path = Path();
-    path.lineTo(
-        0,
-        size.height -
-            borderRadius); // Linha reta até a parte inferior esquerda (borda bottomLeft)
+
+    path.lineTo(0, size.height - borderRadius);
+
     path.quadraticBezierTo(
       0,
       size.height - 25,
       borderRadius,
       size.height - 25,
-    ); // Curva de Bezier quadrática para criar a borda bottomLeft arredondada
-    path.lineTo(
-        size.width - borderRadius,
-        size.height -
-            25); // Linha reta até a parte inferior direita (antes da borda bottomRight)
+    );
+
+    path.lineTo(size.width - borderRadius, size.height - 25);
 
     path.quadraticBezierTo(
       size.width,
       size.height - 25,
       size.width,
       size.height,
-    ); // Curva de Bezier quadrática para criar a borda bottomRight arredondada para dentro
+    );
 
-    path.lineTo(size.width, 0); // Linha reta até a parte superior direita
+    path.lineTo(size.width, 0);
 
     path.lineTo(0, 0);
 
@@ -62,9 +59,9 @@ class BottomRoundedClipper extends CustomClipper<Path> {
       0,
       0,
       borderRadius,
-    ); // Curva de Bezier quadrática para criar a borda topLeft arredondada
+    );
 
-    path.close(); // Fecha o caminho
+    path.close();
 
     return path;
   }
@@ -88,7 +85,7 @@ class _HomePageState extends State<HomePage> {
     return PreferredSize(
       preferredSize: Size(context.screenWidth, height + 90),
       child: ClipPath(
-        clipper: BottomRoundedClipper(),
+        clipper: BackGroundAppBarClipper(),
         child: Container(
           color: ThemeModeController.themeMode == ThemeMode.dark
               ? context.myTheme.primaryContainer
