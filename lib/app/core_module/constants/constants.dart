@@ -23,6 +23,17 @@ const urlTanques = 'tanques/volume';
 const urlCR = 'saldo/saldo';
 const urlPreco = 'preco/precos';
 
+final List<Color> colorsGrafico = [
+  const Color(0xFFba0000),
+  const Color(0xFFff5900),
+  const Color(0xFF54ba00),
+  const Color(0xFF00b1ba),
+  const Color(0xFF0019ba),
+  const Color(0xFFb400ba),
+  const Color(0xFFb7ba00),
+  const Color(0xFF6600BA),
+];
+
 class GlobalUser {
   GlobalUser._();
 

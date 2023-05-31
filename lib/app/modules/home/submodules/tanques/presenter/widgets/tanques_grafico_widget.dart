@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posto_plus/app/core_module/constants/constants.dart';
 import 'package:posto_plus/app/modules/home/submodules/tanques/domain/entities/tanques.dart';
 import 'package:posto_plus/app/utils/constants.dart';
 import 'package:posto_plus/app/utils/formatters.dart';
@@ -8,21 +9,11 @@ class TanquesGraficoWidget extends StatelessWidget {
   final Tanques tanque;
   final int indexTanque;
 
-  TanquesGraficoWidget({
+  const TanquesGraficoWidget({
     Key? key,
     required this.tanque,
     required this.indexTanque,
   }) : super(key: key);
-
-  final List<Color> colors = [
-    const Color(0xFFba0000),
-    const Color(0xFFff5900),
-    const Color(0xFF54ba00),
-    const Color(0xFF00b1ba),
-    const Color(0xFF0019ba),
-    const Color(0xFFb400ba),
-    const Color(0xFFb7ba00),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +31,7 @@ class TanquesGraficoWidget extends StatelessWidget {
               color: Colors.white,
               textStyle: const TextStyle(
                   color: Colors.black, fontWeight: FontWeight.bold),
-              shadowColor: colors[indexTanque],
+              shadowColor: colorsGrafico[indexTanque],
             ),
             onTooltipRender: (TooltipArgs args) {
               args.header =
@@ -65,7 +56,7 @@ class TanquesGraficoWidget extends StatelessWidget {
                   '${tanque.volume.value.Litros()} LT\n(${((tanque.volume.value / tanque.capacidade.value) * 100).Porcentagem()}% )',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: colors[indexTanque],
+                    color: colorsGrafico[indexTanque],
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
@@ -73,7 +64,7 @@ class TanquesGraficoWidget extends StatelessWidget {
               ),
               CircularChartAnnotation(
                 widget: Container(
-                  margin: const EdgeInsets.only(top: 160),
+                  margin: const EdgeInsets.only(top: 165),
                   child: Column(
                     children: [
                       Text(
@@ -109,7 +100,9 @@ class TanquesGraficoWidget extends StatelessWidget {
       TanqueData(
         x: 'A',
         y: tanque.volume.value.toDouble(),
-        pointColor: index < colors.length ? colors[index] : colors[0],
+        pointColor: index < colorsGrafico.length
+            ? colorsGrafico[index]
+            : colorsGrafico[0],
       ),
       TanqueData(
         x: 'B',

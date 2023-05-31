@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/events/vendas_events.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/states/vendas_states.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/vendas_bloc.dart';
@@ -34,7 +35,9 @@ class _BottomVendasWidgetState extends State<BottomVendasWidget> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: context.myTheme.onBackground,
+                color: ThemeModeController.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
               ),
             ),
           ),
@@ -42,10 +45,12 @@ class _BottomVendasWidgetState extends State<BottomVendasWidget> {
             'Total de Vendas Diária',
             style: context.textTheme.bodyLarge!.copyWith(
               fontWeight: FontWeight.bold,
+              color: ThemeModeController.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black,
             ),
           ),
         ),
-        const SizedBox(height: 5),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 10),
@@ -91,9 +96,33 @@ class _BottomVendasWidgetState extends State<BottomVendasWidget> {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(vendas[index].data.value.DiaMes()),
-                              Text('${vendas[index].qtd.value.Litros()} LT'),
-                              Text(vendas[index].total.value.reais()),
+                              Text(
+                                vendas[index].data.value.DiaMes(),
+                                style: context.textTheme.bodyLarge!.copyWith(
+                                  color: ThemeModeController.themeMode ==
+                                          ThemeMode.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
+                              Text(
+                                '${vendas[index].qtd.value.Litros()} LT',
+                                style: context.textTheme.bodyLarge!.copyWith(
+                                  color: ThemeModeController.themeMode ==
+                                          ThemeMode.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
+                              Text(
+                                vendas[index].total.value.reais(),
+                                style: context.textTheme.bodyLarge!.copyWith(
+                                  color: ThemeModeController.themeMode ==
+                                          ThemeMode.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
                             ],
                           ),
                         );

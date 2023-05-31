@@ -14,19 +14,20 @@ import 'package:posto_plus/app/utils/formatters.dart';
 import 'package:posto_plus/app/utils/loading_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class BodyVendasWidget extends StatefulWidget {
+class ColumnGraficoVendasWidget extends StatefulWidget {
   final GraficoBloc graficoBloc;
 
-  const BodyVendasWidget({
+  const ColumnGraficoVendasWidget({
     Key? key,
     required this.graficoBloc,
   }) : super(key: key);
 
   @override
-  State<BodyVendasWidget> createState() => _BodyVendasWidgetState();
+  State<ColumnGraficoVendasWidget> createState() =>
+      _ColumnGraficoVendasWidgetState();
 }
 
-class _BodyVendasWidgetState extends State<BodyVendasWidget> {
+class _ColumnGraficoVendasWidgetState extends State<ColumnGraficoVendasWidget> {
   late List<VendasSemanais> listaNova = [];
 
   montaGrafico(List<Grafico> vendasGrafico) {
@@ -89,6 +90,7 @@ class _BodyVendasWidgetState extends State<BodyVendasWidget> {
             }
 
             return SfCartesianChart(
+              margin: EdgeInsets.zero,
               tooltipBehavior: TooltipBehavior(
                 enable: true,
                 color: Colors.white,
@@ -108,30 +110,23 @@ class _BodyVendasWidgetState extends State<BodyVendasWidget> {
               primaryYAxis: NumericAxis(
                 numberFormat: NumberFormat.simpleCurrency(locale: 'pt-br'),
               ),
-              series: <CartesianSeries<VendasSemanais, String>>[
-                FastLineSeries<VendasSemanais, String>(
+              series: <ColumnSeries<VendasSemanais, String>>[
+                ColumnSeries<VendasSemanais, String>(
                   color: ThemeModeController.themeMode == ThemeMode.dark
-                      ? context.myTheme.onSurface
+                      ? context.myTheme.primaryContainer
                       : context.myTheme.primary,
                   dataSource: montaGrafico(vendas),
                   xValueMapper: (VendasSemanais vendas, _) => vendas.dia.Dia(),
                   yValueMapper: (VendasSemanais vendas, _) => vendas.valor,
-                  markerSettings: MarkerSettings(
-                    isVisible: true,
-                    shape: DataMarkerType.circle,
-                    color: ThemeModeController.themeMode == ThemeMode.dark
-                        ? context.myTheme.primaryContainer
-                        : context.myTheme.onBackground,
-                    borderColor: ThemeModeController.themeMode == ThemeMode.dark
-                        ? context.myTheme.primaryContainer
-                        : context.myTheme.onBackground,
-                  ),
                 )
               ],
               title: ChartTitle(
-                text: 'Vendas dos últimos 7 dias',
+                text: '<< Vendas dos últimos 7 dias >>',
                 textStyle: context.textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: ThemeModeController.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             );

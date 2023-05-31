@@ -25,72 +25,64 @@ class _HeaderVendasWidgetState extends State<HeaderVendasWidget> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: BlocListener<CCustoBloc, CCustoStates>(
-            bloc: Modular.get<CCustoBloc>(),
-            listener: (context, state) {
-              widget.projecaoBloc.add(
-                ProjecaoFilterEvent(ccusto: state.selectedEmpresa),
-              );
+      child: BlocListener<CCustoBloc, CCustoStates>(
+        bloc: Modular.get<CCustoBloc>(),
+        listener: (context, state) {
+          widget.projecaoBloc.add(
+            ProjecaoFilterEvent(ccusto: state.selectedEmpresa),
+          );
+        },
+        child: BlocBuilder<ProjecaoBloc, ProjecaoStates>(
+            bloc: widget.projecaoBloc,
+            buildWhen: (previous, current) {
+              return current is ProjecaoSuccessState;
             },
-            child: BlocBuilder<ProjecaoBloc, ProjecaoStates>(
-                bloc: widget.projecaoBloc,
-                buildWhen: (previous, current) {
-                  return current is ProjecaoSuccessState;
-                },
-                builder: (context, state) {
-                  if (state is! ProjecaoSuccessState) {
-                    return Column(
-                      children: [
-                        LoadingWidget(
-                          size: Size(context.screenWidth * .88, 40),
-                          radius: 10,
-                        ),
-                      ],
-                    );
-                  }
+            builder: (context, state) {
+              if (state is! ProjecaoSuccessState) {
+                return Column(
+                  children: [
+                    LoadingWidget(
+                      size: Size(context.screenWidth * .88, 40),
+                      radius: 10,
+                    ),
+                  ],
+                );
+              }
 
-                  final projecao = state.filtredList;
+              final projecao = state.filtredList;
 
-                  if (projecao.isEmpty) {
-                    return Column(
-                      children: [
-                        LoadingWidget(
-                          size: Size(context.screenWidth * .88, 40),
-                          radius: 10,
-                        ),
-                      ],
-                    );
-                  }
+              if (projecao.isEmpty) {
+                return Column(
+                  children: [
+                    LoadingWidget(
+                      size: Size(context.screenWidth * .88, 40),
+                      radius: 10,
+                    ),
+                  ],
+                );
+              }
 
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LabelsProjecaoWidget(
-                        title: 'Hoje',
-                        litros: projecao[0].qtdDiaria.value,
-                        venda: projecao[0].vendaDiaria.value,
-                      ),
-                      const SizedBox(width: 10),
-                      LabelsProjecaoWidget(
-                        title: 'Semanal',
-                        litros: projecao[0].qtdSemanal.value,
-                        venda: projecao[0].vendaSemanal.value,
-                      ),
-                      const SizedBox(width: 10),
-                      LabelsProjecaoWidget(
-                        title: 'Mensal',
-                        litros: projecao[0].qtdProjecao.value,
-                        venda: projecao[0].vendaProjecao.value,
-                      ),
-                    ],
-                  );
-                }),
-          ),
-        ),
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  LabelsProjecaoWidget(
+                    title: 'Hoje',
+                    litros: projecao[0].qtdDiaria.value,
+                    venda: projecao[0].vendaDiaria.value,
+                  ),
+                  LabelsProjecaoWidget(
+                    title: 'Semanal',
+                    litros: projecao[0].qtdSemanal.value,
+                    venda: projecao[0].vendaSemanal.value,
+                  ),
+                  LabelsProjecaoWidget(
+                    title: 'Mensal',
+                    litros: projecao[0].qtdProjecao.value,
+                    venda: projecao[0].vendaProjecao.value,
+                  ),
+                ],
+              );
+            }),
       ),
     );
   }
