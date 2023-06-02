@@ -39,15 +39,23 @@ class GlobalUser {
 
   static GlobalUser instance = GlobalUser._();
 
-  User get user {
+  late User _user;
+
+  bool getUser() {
     final shared = Modular.get<ILocalStorage>();
 
-    return UserAdapter.fromMap(
-      jsonDecode(
-        shared.getData('user'),
-      ),
-    );
+    final user = shared.getData('user');
+
+    if (user != null) {
+      _user = UserAdapter.fromMap(jsonDecode(user));
+
+      return true;
+    }
+
+    return false;
   }
+
+  User get user => _user;
 }
 
 class GlobalDevice {

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -12,11 +11,9 @@ import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/st
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/states/projecao_states.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/states/vendas_states.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/vendas_bloc.dart';
+import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/widgets/body_vendas_widget.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/widgets/bottom_vendas_widget.dart';
-import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/widgets/column_grafico_vendas_widget.dart';
-import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/widgets/doughnut_grafico_vendas_widget.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/widgets/header_vendas_widget.dart';
-import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/widgets/line_grafico_vendas_widget.dart';
 import 'package:posto_plus/app/utils/my_snackbar.dart';
 
 class VendasPage extends StatefulWidget {
@@ -103,18 +100,8 @@ class _VendasPageState extends State<VendasPage> {
           const SizedBox(height: 5),
           Expanded(
             flex: 4,
-            child: PageView(
-              children: [
-                LineGraficoVendasWidget(
-                  graficoBloc: widget.graficoBloc,
-                ),
-                ColumnGraficoVendasWidget(
-                  graficoBloc: widget.graficoBloc,
-                ),
-                DoughNutGraficoVendasWidget(
-                  graficoBloc: widget.graficoBloc,
-                ),
-              ],
+            child: BodyVendasWidget(
+              graficoBloc: widget.graficoBloc,
             ),
           ),
           const SizedBox(height: 5),

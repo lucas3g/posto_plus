@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -14,7 +13,6 @@ import 'package:posto_plus/app/core_module/services/license/bloc/license_bloc.da
 import 'package:posto_plus/app/core_module/services/license/bloc/states/license_states.dart';
 import 'package:posto_plus/app/core_module/services/shared_preferences/local_storage_interface.dart';
 import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
-import 'package:posto_plus/app/modules/auth/infra/adapters/user_adapter.dart';
 import 'package:posto_plus/app/utils/constants.dart';
 import 'package:posto_plus/app/utils/my_snackbar.dart';
 
@@ -39,14 +37,21 @@ class _SplashPageState extends State<SplashPage> {
 
   Future _checkUser() async {
     final shared = Modular.get<ILocalStorage>();
-    user = shared.getData('user');
+
+    final existeUser = GlobalUser.instance.getUser();
+
+    if (existeUser) {
+      user = GlobalUser.instance.user;
+    } else {
+      user = null;
+    }
 
     if (user != null) {
-      final userLogado = UserAdapter.fromMap(jsonDecode(user));
+      final userLogado = user;
 
       if (userLogado.cnpj.value.contains('97.305.890')) {
         user = null;
-        shared.removeData('user');
+        await shared.removeData('user');
         Modular.to.navigate('/auth/');
 
         BotToast.closeAllLoading();

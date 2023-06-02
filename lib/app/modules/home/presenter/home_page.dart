@@ -83,48 +83,47 @@ class _HomePageState extends State<HomePage> {
 
   _appBar(height) {
     return PreferredSize(
-      preferredSize: Size(context.screenWidth, height + 90),
-      child: ClipPath(
-        clipper: BackGroundAppBarClipper(),
-        child: Container(
-          color: ThemeModeController.themeMode == ThemeMode.dark
-              ? context.myTheme.primaryContainer
-              : context.myTheme.primary,
-          padding: const EdgeInsets.only(left: 20),
-          child: SafeArea(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyTitleAppBarWidget(index: _currentIndex),
-                    Builder(builder: (context) {
-                      return IconButton(
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        icon: const Icon(
-                          Icons.settings,
-                          color: Colors.white,
-                        ),
-                        tooltip: MaterialLocalizations.of(context)
-                            .openAppDrawerTooltip,
-                      );
-                    }),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: DropDownWidget(
-                    ccustoBloc: widget.ccustoBloc,
+        preferredSize: Size(context.screenWidth, height + 90),
+        child: ClipPath(
+          clipper: BackGroundAppBarClipper(),
+          child: Container(
+            color: ThemeModeController.themeMode == ThemeMode.dark
+                ? context.myTheme.primaryContainer
+                : context.myTheme.primary,
+            padding: const EdgeInsets.only(left: 20),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyTitleAppBarWidget(index: _currentIndex),
+                      Builder(builder: (context) {
+                        return IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          icon: const Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                          ),
+                          tooltip: MaterialLocalizations.of(context)
+                              .openAppDrawerTooltip,
+                        );
+                      }),
+                    ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: DropDownWidget(
+                      ccustoBloc: widget.ccustoBloc,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   @override

@@ -84,6 +84,8 @@ class _AuthPageState extends State<AuthPage> {
           ),
         );
 
+        GlobalUser.instance.getUser();
+
         Modular.to.navigate('/home/');
       }
 
@@ -222,6 +224,8 @@ class _AuthPageState extends State<AuthPage> {
                           Navigator.of(context, rootNavigator: true)
                               .pop('dialog');
 
+                          await shared.removeData('user');
+
                           await shared.setData(
                             params: SharedParams(
                               key: 'user',
@@ -236,6 +240,8 @@ class _AuthPageState extends State<AuthPage> {
                               ),
                             ),
                           );
+
+                          GlobalUser.instance.getUser();
 
                           Modular.to.navigate('/home/');
                         },
