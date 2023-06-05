@@ -100,9 +100,7 @@ class _HomePageState extends State<HomePage> {
                       MyTitleAppBarWidget(index: _currentIndex),
                       Builder(builder: (context) {
                         return IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
+                          onPressed: Scaffold.of(context).openDrawer,
                           icon: const Icon(
                             Icons.settings,
                             color: Colors.white,
@@ -139,16 +137,15 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: ThemeModeController.themeMode == ThemeMode.dark
               ? context.myTheme.primaryContainer
               : context.myTheme.primary,
-          haptic: true, // haptic feedback
+          haptic: true,
           tabBorderRadius: 15,
-          curve: Curves.easeIn, // tab animation curves
+          curve: Curves.easeIn,
           duration: const Duration(milliseconds: 500),
-          gap: 8, // the tab button gap between icon and text
-          activeColor: Colors.white, // selected icon and text color
+          gap: 8,
+          activeColor: Colors.white,
           tabBackgroundColor: ThemeModeController.themeMode == ThemeMode.dark
               ? context.myTheme.primaryContainer.withOpacity(0.1)
-              : context.myTheme.primary
-                  .withOpacity(0.1), // selected tab background color
+              : context.myTheme.primary.withOpacity(0.1),
           padding: Platform.isAndroid
               ? const EdgeInsets.symmetric(horizontal: 15, vertical: 15)
               : const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
