@@ -68,6 +68,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
+  mocktail: ^0.3.0
+  full_coverage: ^1.0.0
 
 flutter_icons:
   android: "launcher_icon"
