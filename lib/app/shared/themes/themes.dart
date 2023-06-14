@@ -16,6 +16,10 @@ final lightTheme = ThemeData(
       color: _lightColorScheme.background,
     ),
   ),
+  dialogTheme: DialogTheme(
+    backgroundColor: _lightColorScheme.background,
+    surfaceTintColor: _lightColorScheme.background,
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       foregroundColor: MaterialStateProperty.resolveWith(
@@ -36,7 +40,10 @@ final darkTheme = ThemeData(
     backgroundColor: _darkColorScheme.onPrimary,
     centerTitle: true,
   ),
-  dialogBackgroundColor: backgroundBlack,
+  dialogTheme: const DialogTheme(
+    backgroundColor: backgroundBlack,
+    surfaceTintColor: backgroundBlack,
+  ),
   scaffoldBackgroundColor: backgroundBlack,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(

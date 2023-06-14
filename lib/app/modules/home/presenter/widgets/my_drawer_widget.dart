@@ -118,7 +118,7 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                     ),
                     const ListTile(
                       title: Text(
-                        'Versão 28.0.0',
+                        'Versão 30.0.0',
                         textAlign: TextAlign.end,
                       ),
                     ),

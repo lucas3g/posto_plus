@@ -148,9 +148,9 @@ class _AuthPageState extends State<AuthPage> {
       );
     }
 
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
+      children: [
         Icon(Icons.check_circle_rounded),
         SizedBox(width: 10),
         Text(
@@ -178,7 +178,7 @@ class _AuthPageState extends State<AuthPage> {
   void mostraDialogDemonstracao() {
     showDialog(
         context: context,
-        barrierColor: Colors.black.withOpacity(0.1),
+        barrierColor: Colors.black38,
         builder: (_) {
           return AlertDialog(
             elevation: 8,
@@ -207,9 +207,9 @@ class _AuthPageState extends State<AuthPage> {
                           Navigator.of(context, rootNavigator: true)
                               .pop('dialog');
                         },
-                        label: Row(
+                        label: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(Icons.cancel_rounded),
                             SizedBox(width: 10),
                             Text('Não'),
@@ -245,9 +245,9 @@ class _AuthPageState extends State<AuthPage> {
 
                           Modular.to.navigate('/home/');
                         },
-                        label: Row(
+                        label: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(Icons.done_rounded),
                             SizedBox(width: 10),
                             Text('Iniciar'),
@@ -266,6 +266,7 @@ class _AuthPageState extends State<AuthPage> {
   void licencaDialog() {
     showDialog(
       context: context,
+      barrierColor: Colors.black38,
       builder: (context) {
         return MyAlertDialogWidget(
           title: 'Código de Autenticação',
@@ -274,9 +275,9 @@ class _AuthPageState extends State<AuthPage> {
               'Se você já tem uma licença. Por favor, ignore essa mensagem.',
           okButton: MyElevatedButtonWidget(
             height: 45,
-            label: Row(
+            label: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(LineIcons.whatSApp),
                 SizedBox(width: 5),
                 Text('Whats'),
@@ -292,9 +293,9 @@ class _AuthPageState extends State<AuthPage> {
           ),
           cancelButton: MyElevatedButtonWidget(
             height: 45,
-            label: Row(
+            label: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(Icons.close),
                 SizedBox(width: 5),
                 Text('Fechar'),
