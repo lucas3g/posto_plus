@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
               _currentIndex = index;
             });
 
-            HomeController.navigation(index);
+            HomeController.navigation(index, true);
           },
           tabs: const [
             GButton(

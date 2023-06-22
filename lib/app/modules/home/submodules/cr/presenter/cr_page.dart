@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
+import 'package:posto_plus/app/modules/home/presenter/controller/home_controller.dart';
 import 'package:posto_plus/app/modules/home/submodules/cr/presenter/blocs/cr_bloc.dart';
 import 'package:posto_plus/app/modules/home/submodules/cr/presenter/blocs/events/cr_events.dart';
 import 'package:posto_plus/app/modules/home/submodules/cr/presenter/blocs/states/cr_states.dart';
@@ -67,6 +68,10 @@ class _CRPageState extends State<CRPage> {
     sub.cancel();
 
     super.dispose();
+  }
+
+  Future<void> getAllData() async {
+    await GetAllData.get();
   }
 
   @override
@@ -181,14 +186,18 @@ class _CRPageState extends State<CRPage> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: ListView.separated(
-                            itemBuilder: (context, index) {
-                              return MyListTileCRWidget(cr: crs[index]);
-                            },
-                            separatorBuilder: (context, index) => const Divider(
-                              color: Colors.grey,
+                          child: RefreshIndicator.adaptive(
+                            onRefresh: getAllData,
+                            child: ListView.separated(
+                              itemBuilder: (context, index) {
+                                return MyListTileCRWidget(cr: crs[index]);
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const Divider(
+                                color: Colors.grey,
+                              ),
+                              itemCount: crs.length,
                             ),
-                            itemCount: crs.length,
                           ),
                         ),
                       ),

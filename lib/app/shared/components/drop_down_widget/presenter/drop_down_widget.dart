@@ -53,8 +53,8 @@ class _DropDownWidgetState extends State<DropDownWidget> {
               },
               builder: (context, state) {
                 if (state is! CCustoSuccessState) {
-                  return Row(
-                    children: const [
+                  return const Row(
+                    children: [
                       Expanded(
                         child: LoadingWidget(size: Size(0, 40), radius: 10),
                       ),

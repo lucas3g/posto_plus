@@ -60,8 +60,8 @@ class _LineGraficoVendasWidgetState extends State<LineGraficoVendasWidget> {
           },
           builder: (context, state) {
             if (state is! GraficoSuccessState) {
-              return Column(
-                children: const [
+              return const Column(
+                children: [
                   Expanded(
                     child: LoadingWidget(
                       size: Size(double.maxFinite, 40),
@@ -76,8 +76,8 @@ class _LineGraficoVendasWidgetState extends State<LineGraficoVendasWidget> {
             final vendas = state.filtredList;
 
             if (vendas.isEmpty) {
-              return Column(
-                children: const [
+              return const Column(
+                children: [
                   Expanded(
                     child: LoadingWidget(
                       size: Size(double.maxFinite, 40),
