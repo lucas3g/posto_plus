@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
   late int _currentIndex = 0;
 
   Future verifyHasInternet() async {
-    if ((await HomeController.verifyHasInternet())) {
+    if (!(await HomeController.verifyHasInternet())) {
       MySnackBar(
         title: 'Atenção, você não tem internet',
         message: 'Os dados exibidos são da ultima consulta com internet.',

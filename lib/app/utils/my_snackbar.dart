@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:posto_plus/app/core_module/services/themeMode/theme_mode_controller.dart';
 import 'package:posto_plus/app/utils/constants.dart';
 import 'package:posto_plus/app/utils/navigation_service.dart';
 
@@ -25,8 +26,10 @@ class MySnackBar {
       return Colors.green.shade800;
     }
     if (type == TypeSnack.error) {
-      return NavigationService
-          .navigatorKey.currentContext!.myTheme.primaryContainer;
+      return ThemeModeController.themeMode == ThemeMode.dark
+          ? NavigationService
+              .navigatorKey.currentContext!.myTheme.primaryContainer
+          : NavigationService.navigatorKey.currentContext!.myTheme.primary;
     }
     if (type == TypeSnack.warning) {
       return Colors.yellow.shade900;
@@ -52,7 +55,7 @@ class MySnackBar {
   _showSnackBar() {
     late SnackBar snackBar = SnackBar(
       backgroundColor: Colors.transparent,
-      elevation: 8,
+      elevation: 0,
       duration: Duration(seconds: duration),
       behavior: SnackBarBehavior.fixed,
       content: Stack(

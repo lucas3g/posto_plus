@@ -22,6 +22,7 @@ import 'package:posto_plus/app/modules/auth/presenter/bloc/auth_bloc.dart';
 import 'package:posto_plus/app/modules/auth/presenter/bloc/events/auth_events.dart';
 import 'package:posto_plus/app/modules/auth/presenter/bloc/states/auth_states.dart';
 import 'package:posto_plus/app/modules/auth/presenter/controller/auth_controller.dart';
+import 'package:posto_plus/app/modules/home/presenter/controller/home_controller.dart';
 import 'package:posto_plus/app/shared/components/my_alert_dialog_widget.dart';
 import 'package:posto_plus/app/shared/components/my_elevated_button_widget.dart';
 import 'package:posto_plus/app/shared/components/my_input_widget.dart';
@@ -137,7 +138,9 @@ class _AuthPageState extends State<AuthPage> {
         child: SizedBox(
           height: 25,
           width: 25,
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
         ),
       );
     }
@@ -161,12 +164,22 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  void initLogin() {
+  void initLogin() async {
     if (!gkForm.currentState!.validate()) {
       return;
     }
 
     FocusScope.of(context).requestFocus(FocusNode());
+
+    if (!(await HomeController.verifyHasInternet())) {
+      MySnackBar(
+        title: 'Atenção',
+        message: 'Você está sem internet. Por favor verifique sua conexão.',
+        type: TypeSnack.help,
+      );
+
+      return;
+    }
 
     widget.licenseBloc.add(
       VerifyLicenseEvent(

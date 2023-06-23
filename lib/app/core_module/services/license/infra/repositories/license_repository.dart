@@ -22,8 +22,9 @@ class LicenseRepository implements ILicenseRepository {
       final result = await datasource.verifyLicense(deviceInfo);
 
       return LicenseAdapter.fromMap(result).toSuccess();
-    } on DioError catch (e) {
-      return MyException(message: e.message ?? '').toFailure();
+    } on DioException catch (e) {
+      return MyException(message: e.message ?? 'Erro ao tentar buscar licença.')
+          .toFailure();
     } on IMyException catch (e) {
       return MyException(message: e.message).toFailure();
     } catch (e) {

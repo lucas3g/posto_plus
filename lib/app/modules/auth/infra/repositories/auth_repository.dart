@@ -19,7 +19,7 @@ class AuthRepository implements IAuthRepository {
       return UserAdapter.fromMap(result).toSuccess();
     } on IMyException catch (e) {
       return e.toFailure();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return MyException(message: e.message ?? 'Erro ao tentar entrar')
           .toFailure();
     } catch (e) {

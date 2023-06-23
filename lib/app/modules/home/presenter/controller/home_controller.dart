@@ -112,8 +112,9 @@ class HomeController {
   static Future<bool> verifyHasInternet() async {
     final conn = await (Connectivity().checkConnectivity());
 
-    return (!(conn == ConnectivityResult.mobile) &&
-        !(conn == ConnectivityResult.wifi));
+    return (((conn == ConnectivityResult.mobile) ||
+            (conn == ConnectivityResult.wifi)) ||
+        (conn == ConnectivityResult.ethernet));
   }
 }
 
