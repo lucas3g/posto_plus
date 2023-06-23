@@ -93,6 +93,7 @@ class _AuthPageState extends State<AuthPage> {
           title: 'Atenção',
           message: state.message,
           type: TypeSnack.error,
+          duration: 4,
         );
       }
     });
