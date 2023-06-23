@@ -23,7 +23,7 @@ class CCustoRepository implements ICCustoRepository {
       return ccustos.toSuccess();
     } on IMyException catch (e) {
       return e.toFailure();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return MyException(message: e.message!).toFailure();
     } catch (e) {
       return MyException(message: e.toString()).toFailure();

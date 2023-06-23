@@ -21,7 +21,10 @@ Bind<Dio> _dioFactory() {
     // baseUrl: baseUrl,
     headers: {'Content-Type': 'application/json'},
   );
-  return Bind.factory<Dio>((i) => Dio(baseOptions), export: true);
+  return Bind.factory<Dio>(
+    (i) => Dio(baseOptions)..interceptors.add(DioInterceptor()),
+    export: true,
+  );
 }
 
 class CoreModule extends Module {

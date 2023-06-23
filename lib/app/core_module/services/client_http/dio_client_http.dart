@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:posto_plus/app/core_module/services/shared_preferences/adapters/shared_params.dart';
+import 'package:posto_plus/app/core_module/services/shared_preferences/local_storage_interface.dart';
 
 import 'client_http_interface.dart';
 
@@ -58,16 +61,6 @@ class DioClientHttp implements IClientHttp {
     return _responseAdapter(response);
   }
 
-  @override
-  void addInterceptor(covariant DioInterceptor interceptor) {
-    _interceptors.add(interceptor);
-  }
-
-  @override
-  void removeInterceptor(covariant DioInterceptor interceptor) {
-    _interceptors.remove(interceptor);
-  }
-
   BaseResponse _responseAdapter(Response response) {
     return BaseResponse(
       response.data,
@@ -79,26 +72,52 @@ class DioClientHttp implements IClientHttp {
       ),
     );
   }
+
+  @override
+  void addInterceptor(DioInterceptor interceptor) {
+    _interceptors.add(interceptor);
+  }
+
+  @override
+  void removeInterceptor(DioInterceptor interceptor) {
+    _interceptors.remove(interceptor);
+  }
 }
 
-class DioInterceptor
-    extends BaseInterceptor<RequestOptions, Response, DioError> {
+class DioInterceptor extends InterceptorsWrapper {
   @override
-  Future<DioError> onError(DioError error) async {
-    return error;
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    handler.next(options);
   }
 
   @override
-  Future<RequestOptions> onRequest(
-    RequestOptions request,
-  ) async {
-    return request;
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+    final options = response.requestOptions;
+
+    if (options.method == 'GET') {
+      final shared = Modular.get<ILocalStorage>();
+
+      await shared.setData(
+        params: SharedParams(
+          key: options.path,
+          value: response.data,
+        ),
+      );
+    }
+
+    handler.resolve(response);
   }
 
   @override
-  Future<Response> onResponse(
-    Response response,
-  ) async {
-    return response;
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    final shared = Modular.get<ILocalStorage>();
+
+    final data = shared.getData(err.requestOptions.path);
+
+    if (data != null) {
+      handler.resolve(Response(requestOptions: err.requestOptions, data: data));
+    } else {
+      handler.next(err);
+    }
   }
 }
