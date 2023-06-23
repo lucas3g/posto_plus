@@ -1,11 +1,12 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:posto_plus/app/utils/navigation_service.dart';
+
+enum TypeSnack { success, error, warning, help }
 
 class MySnackBar {
   final String title;
   final String message;
-  final ContentType type;
+  final TypeSnack type;
 
   MySnackBar({
     required this.title,
@@ -15,16 +16,50 @@ class MySnackBar {
     _showSnackBar();
   }
 
+  Color _returnBackgroundColor() {
+    if (type == TypeSnack.success) {
+      return Colors.green.shade800;
+    }
+    if (type == TypeSnack.error) {
+      return Colors.red.shade800;
+    }
+    if (type == TypeSnack.warning) {
+      return Colors.amber.shade800;
+    }
+
+    return Colors.blue.shade800;
+  }
+
   _showSnackBar() {
     late SnackBar snackBar = SnackBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+      backgroundColor: _returnBackgroundColor(),
+      elevation: 8,
+      duration: const Duration(seconds: 4),
       margin: const EdgeInsets.all(20),
       behavior: SnackBarBehavior.floating,
-      content: AwesomeSnackbarContent(
-        title: '   $title',
-        message: '     $message',
-        contentType: type,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            message,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
 

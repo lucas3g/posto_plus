@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -108,7 +107,7 @@ class _SplashPageState extends State<SplashPage> {
               title: 'Ops...',
               message:
                   'Licença não esta ativa. Por favor, entre em contato com o suporte',
-              type: ContentType.warning,
+              type: TypeSnack.warning,
             );
             Modular.to.navigate('/auth/');
             return;
@@ -121,7 +120,7 @@ class _SplashPageState extends State<SplashPage> {
               title: 'Ops...',
               message:
                   'Licença não encontrada. Por favor, entre em contato com o suporte',
-              type: ContentType.warning,
+              type: TypeSnack.warning,
             );
             Modular.to.navigate('/auth/');
             return;

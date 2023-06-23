@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:posto_plus/app/utils/my_snackbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +19,7 @@ class AuthController {
         MySnackBar(
           title: 'Atenção',
           message: 'Whatsapp não está instalado.',
-          type: ContentType.warning,
+          type: TypeSnack.warning,
         );
       }
     } else {
@@ -30,7 +29,7 @@ class AuthController {
         MySnackBar(
           title: 'Atenção',
           message: 'Whatsapp não está instalado.',
-          type: ContentType.warning,
+          type: TypeSnack.warning,
         );
       }
     }

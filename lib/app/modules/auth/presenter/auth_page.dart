@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -93,7 +92,7 @@ class _AuthPageState extends State<AuthPage> {
         MySnackBar(
           title: 'Atenção',
           message: state.message,
-          type: ContentType.failure,
+          type: TypeSnack.error,
         );
       }
     });
@@ -108,7 +107,7 @@ class _AuthPageState extends State<AuthPage> {
           title: 'Atenção',
           message:
               'Licença não ativa. Por favor, entre em contato com o suporte.',
-          type: ContentType.help,
+          type: TypeSnack.help,
         );
       }
 
@@ -117,7 +116,7 @@ class _AuthPageState extends State<AuthPage> {
           title: 'Atenção',
           message:
               'Licença não encontrada. Por favor, entre em contato com o suporte.',
-          type: ContentType.warning,
+          type: TypeSnack.warning,
         );
       }
 
@@ -125,7 +124,7 @@ class _AuthPageState extends State<AuthPage> {
         MySnackBar(
           title: 'Opss...',
           message: state.message,
-          type: ContentType.failure,
+          type: TypeSnack.error,
         );
       }
     });

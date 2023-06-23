@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:posto_plus/app/modules/home/submodules/cr/presenter/blocs/cr_bloc.dart';
@@ -106,6 +107,13 @@ class HomeController {
     } else {
       bloc.add(PrecoClienteFilterEvent(filtro: ''));
     }
+  }
+
+  static Future<bool> verifyHasInternet() async {
+    final conn = await (Connectivity().checkConnectivity());
+
+    return (!(conn == ConnectivityResult.mobile) &&
+        !(conn == ConnectivityResult.wifi));
   }
 }
 

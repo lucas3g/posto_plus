@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:posto_plus/app/modules/home/presenter/controller/home_controller.dart';
 import 'package:posto_plus/app/modules/home/submodules/vendas/presenter/blocs/grafico_bloc.dart';
@@ -47,7 +46,7 @@ class _VendasPageState extends State<VendasPage> {
         MySnackBar(
           title: 'Opss...',
           message: state.message,
-          type: ContentType.failure,
+          type: TypeSnack.error,
         );
       }
     });
@@ -57,7 +56,7 @@ class _VendasPageState extends State<VendasPage> {
         MySnackBar(
           title: 'Opss...',
           message: state.message,
-          type: ContentType.failure,
+          type: TypeSnack.error,
         );
       }
     });
@@ -67,7 +66,7 @@ class _VendasPageState extends State<VendasPage> {
         MySnackBar(
           title: 'Opss...',
           message: state.message,
-          type: ContentType.failure,
+          type: TypeSnack.error,
         );
       }
     });

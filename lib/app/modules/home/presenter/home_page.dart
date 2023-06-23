@@ -10,6 +10,7 @@ import 'package:posto_plus/app/modules/home/presenter/widgets/my_title_app_bar_w
 import 'package:posto_plus/app/shared/components/drop_down_widget/presenter/bloc/ccusto_bloc.dart';
 import 'package:posto_plus/app/shared/components/drop_down_widget/presenter/drop_down_widget.dart';
 import 'package:posto_plus/app/utils/constants.dart';
+import 'package:posto_plus/app/utils/my_snackbar.dart';
 
 class HomePage extends StatefulWidget {
   final CCustoBloc ccustoBloc;
@@ -75,10 +76,24 @@ class BackGroundAppBarClipper extends CustomClipper<Path> {
 class _HomePageState extends State<HomePage> {
   late int _currentIndex = 0;
 
+  Future verifyHasInternet() async {
+    if ((await HomeController.verifyHasInternet())) {
+      MySnackBar(
+        title: 'Atenção, você não tem internet',
+        message: 'Os dados exibidos são da ultima consulta com internet.',
+        type: TypeSnack.help,
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
     Modular.to.pushNamed('./vendas/');
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      verifyHasInternet();
+    });
   }
 
   _appBar(height) {
