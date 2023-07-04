@@ -42,6 +42,21 @@ class SharedPreferencesService implements ILocalStorage {
   Future<bool> removeData(String key) async {
     return await sharedPreferences.remove(key);
   }
+
+  @override
+  Future<bool> removeAllData() async {
+    try {
+      final keys = sharedPreferences.getKeys();
+
+      for (final key in keys) {
+        await sharedPreferences.remove(key);
+      }
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
 
 class SharedPreferencesException implements Exception {

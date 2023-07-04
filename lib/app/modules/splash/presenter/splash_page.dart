@@ -50,7 +50,7 @@ class _SplashPageState extends State<SplashPage> {
 
       if (userLogado.cnpj.value.contains('97.305.890')) {
         user = null;
-        await shared.removeData('user');
+        await shared.removeAllData();
         Modular.to.navigate('/auth/');
 
         BotToast.closeAllLoading();

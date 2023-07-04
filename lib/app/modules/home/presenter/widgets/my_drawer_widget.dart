@@ -97,10 +97,7 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                       onTap: () async {
                         final localStorage = Modular.get<ILocalStorage>();
 
-                        await localStorage.removeData('user');
-                        await localStorage.removeData('DEVICE_ID');
-
-                        await Future.delayed(const Duration(milliseconds: 150));
+                        await localStorage.removeAllData();
 
                         Modular.to.navigate('/auth/');
                       },
